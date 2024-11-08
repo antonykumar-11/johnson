@@ -16,7 +16,7 @@ const corsOptions = {
     "http://localhost:5173",
     "http://localhost:5174", // Add this line to include the new port
     "http://localhost:3000",
-    process.env.CLIENT_URL,
+    process.env.FRONTEND_URL,
   ],
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true,

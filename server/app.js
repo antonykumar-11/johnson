@@ -13,14 +13,17 @@ dotenv.config({ path: path.join(__dirname, "config/config.env") });
 // CORS options
 const corsOptions = {
   origin: [
-    "http://localhost:5173",
-    "http://localhost:5174", // Add this line to include the new port
-    "http://localhost:3000",
-    process.env.FRONTEND_URL,
+    "https://invoice-3-c9pf.onrender.com", // Deployed backend on Render
+    "http://localhost:5173", // Local frontend on Vite
+    "http://localhost:5174", // Additional local port, if needed
+    "http://localhost:3000", // React default port
+    process.env.FRONTEND_URL, // Environment variable for live frontend
   ],
-  methods: ["GET", "POST", "PUT", "DELETE"],
-  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE"], // Specify allowed HTTP methods
+  credentials: true, // Allows cookies/auth tokens
 };
+
+app.use(cors(corsOptions));
 
 // Create an instance of express
 const app = express();

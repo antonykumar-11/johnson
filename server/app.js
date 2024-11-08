@@ -13,16 +13,16 @@ dotenv.config({ path: path.join(__dirname, "config/config.env") });
 // CORS options
 const corsOptions = {
   origin: [
-    "https://accounting-invoice.onrender.com", // Deployed backend on Render
-    "http://localhost:5173", // Local frontend on Vite
-    "http://localhost:5174", // Additional local port, if needed
-    "http://localhost:3000", // React default port
-    process.env.FRONTEND_URL, // Environment variable for live frontend
-    "https://invoice-client-six.vercel.app",
+    "https://accounting-invoice.onrender.com", // Deployed backend
+    "http://localhost:5173", // Local Vite
+    "http://localhost:5174", // Additional local ports
+    "https://invoice-client-six.vercel.app", // Vercel frontend
+    process.env.FRONTEND_URL, // Any other live frontend
   ],
-  methods: ["GET", "POST", "PUT", "DELETE"], // Specify allowed HTTP methods
-  credentials: true, // Allows cookies/auth tokens
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true,
 };
+app.use(cors(corsOptions));
 
 // Create an instance of express
 const app = express();

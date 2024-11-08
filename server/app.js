@@ -13,7 +13,7 @@ dotenv.config({ path: path.join(__dirname, "config/config.env") });
 // CORS options
 const corsOptions = {
   origin: [
-    "https://invoice-6svm.onrender.com", // Deployed backend on Render
+    "https://accounting-invoice.onrender.com", // Deployed backend on Render
     "http://localhost:5173", // Local frontend on Vite
     "http://localhost:5174", // Additional local port, if needed
     "http://localhost:3000", // React default port

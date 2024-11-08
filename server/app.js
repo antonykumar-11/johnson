@@ -23,14 +23,12 @@ const corsOptions = {
   credentials: true, // Allows cookies/auth tokens
 };
 
-app.use(cors(corsOptions));
-
 // Create an instance of express
 const app = express();
 
 // Connect to database
 connectDatabase();
-
+app.use(cors(corsOptions));
 // Middleware
 app.use(express.json());
 app.use(cookieParser());

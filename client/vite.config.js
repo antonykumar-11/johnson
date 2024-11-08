@@ -11,5 +11,14 @@ export default defineConfig({
   },
   build: {
     outDir: "dist", // Ensures Vite outputs to the "dist" directory
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes("node_modules")) {
+            return "vendor"; // Split vendor libraries into a separate chunk
+          }
+        },
+      },
+    },
   },
 });

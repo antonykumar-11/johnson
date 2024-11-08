@@ -16,7 +16,7 @@ const corsOptions = {
     "https://accounting-invoice.onrender.com", // Deployed backend
     "http://localhost:5173", // Local Vite
     "http://localhost:5174", // Additional local ports
-    "https://invoice-client-six.vercel.app", // Vercel frontend
+    "https://www.alphacranesalpha.in", // Vercel frontend
     process.env.FRONTEND_URL, // Any other live frontend
   ],
   methods: ["GET", "POST", "PUT", "DELETE"],

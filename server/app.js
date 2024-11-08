@@ -18,6 +18,7 @@ const corsOptions = {
     "http://localhost:5174", // Additional local port, if needed
     "http://localhost:3000", // React default port
     process.env.FRONTEND_URL, // Environment variable for live frontend
+    "https://invoice-client-six.vercel.app",
   ],
   methods: ["GET", "POST", "PUT", "DELETE"], // Specify allowed HTTP methods
   credentials: true, // Allows cookies/auth tokens

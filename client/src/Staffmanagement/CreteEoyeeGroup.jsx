@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useGetEmployeesQuery } from "../store/api/EmployeeHeadApi";
 import { useCreateEmployeeGroupMutation } from "../store/api/EmployeeGroupApi";
 import { ToastContainer, toast } from "react-toastify";
@@ -6,10 +6,12 @@ import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 
 const CreteEoyeeGroup = () => {
-  const { data: employees, error, isLoading } = useGetEmployeesQuery();
+  const { data: employees, error, isLoading, refetch } = useGetEmployeesQuery();
   const [createEmployeeGroup] = useCreateEmployeeGroupMutation();
   const navigate = useNavigate();
-
+  useEffect(() => {
+    refetch(); // Corrected the typo here
+  }, [refetch]);
   // Form state
   const [employee, setEmployee] = useState({ name: "", date: "", under: "" });
   const [avatar, setAvatar] = useState(null);

@@ -5,11 +5,9 @@ const path = require("path");
 const dotenv = require("dotenv");
 const errorMiddleware = require("./middlewares/error");
 const connectDatabase = require("./config/database");
-
 // Load environment variables
 dotenv.config({ path: path.join(__dirname, "config/config.env") });
 
-// CORS options
 // CORS options
 const corsOptions = {
   origin: [
@@ -22,19 +20,20 @@ const corsOptions = {
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true,
 };
-app.use(cors(corsOptions));
 
 // Create an instance of express
 const app = express();
 
 // Connect to database
 connectDatabase();
+// Apply CORS with options
 app.use(cors(corsOptions));
+// Handle preflight requests
+app.options("*", cors(corsOptions));
 // Middleware
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors(corsOptions));
-app.options("*", cors(corsOptions)); // Handle preflight requests
+
 // Handle preflight requests
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 

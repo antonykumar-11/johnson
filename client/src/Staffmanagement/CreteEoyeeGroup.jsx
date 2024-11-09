@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 
 const CreteEoyeeGroup = () => {
   const { data: employees, error, isLoading, refetch } = useGetEmployeesQuery();
+  console.log("emplyee", employees);
   const [createEmployeeGroup] = useCreateEmployeeGroupMutation();
   const navigate = useNavigate();
   // Form state

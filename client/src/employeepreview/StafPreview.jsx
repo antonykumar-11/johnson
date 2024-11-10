@@ -519,8 +519,8 @@ const UpdateEmployeeForm = () => {
   const location = useLocation();
   const dropdownRef = useRef(null);
   const navigate = useNavigate;
-  const [createEmployee] = useUpdateEmployeeByIdMutation();
-  const [createLedger] = useUpdateLedgerMutation();
+  const [updateEmployeeById] = useUpdateEmployeeByIdMutation();
+  const [updateLedger] = useUpdateLedgerMutation();
   const {
     data: specificEmployee,
     isLoading: voucherLoading,
@@ -705,7 +705,9 @@ const UpdateEmployeeForm = () => {
     }
 
     try {
+      // Prepare the ledger data
       const ledgerData = {
+        payHeadType: "Staff",
         name: formData.stockName,
         under: formData.underForLedger,
         group: formData.group,
@@ -713,9 +715,14 @@ const UpdateEmployeeForm = () => {
         category: formData.category,
       };
 
-      const ledgerResponse = await createLedger(ledgerData).unwrap();
-      console.log("Ledger created successfully", ledgerResponse);
+      // Call the updateLedger mutation instead of createLedger
+      const ledgerResponse = await updateLedger({
+        id: employeeId,
+        updatedPurchase: ledgerData,
+      }).unwrap();
+      console.log("Ledger updated successfully", ledgerResponse);
 
+      // Prepare form data for employee
       const formDataToSubmit = new FormData();
       Object.keys(formData).forEach((key) => {
         formDataToSubmit.append(key, formData[key]);
@@ -725,13 +732,20 @@ const UpdateEmployeeForm = () => {
         formDataToSubmit.append("avatar", avatar);
       }
 
-      const employeeResponse = await createEmployee(formDataToSubmit).unwrap();
+      // Call the updateEmployeeById mutation instead of createEmployee
+      const employeeResponse = await updateEmployeeById({
+        id: employeeId,
+        data: formDataToSubmit,
+      }).unwrap();
+      console.log("Employee updated successfully", employeeResponse);
+
+      // Navigate after successful update
       navigate("/staff/payHeadDetails");
       resetFormData();
-      toast.success("Employee and Ledger saved successfully!");
+      toast.success("Employee and Ledger updated successfully!");
     } catch (error) {
-      console.error("Failed to save ledger or employee: ", error);
-      toast.error("Failed to save ledger or employee.");
+      console.error("Failed to update ledger or employee: ", error);
+      toast.error("Failed to update ledger or employee.");
     }
   };
 

@@ -498,7 +498,7 @@ import { useGetTaxesQuery } from "../store/api/TaxApi";
 import { HiChevronDown, HiChevronUp } from "react-icons/hi";
 import { useGetGroupsQuery } from "../store/api/Group";
 import UnderPayHead1 from "../employeepreview/UnderPayHead2";
-import { useCreateLedgerMutation } from "../store/api/LedgerPayHead";
+import { useUpdateLedgerMutation } from "../store/api/LedgerPayHead";
 import { useGetLedgerQuery } from "../store/api/LedgerApi";
 import {
   Navigate,
@@ -520,7 +520,7 @@ const UpdateEmployeeForm = () => {
   const dropdownRef = useRef(null);
   const navigate = useNavigate;
   const [createEmployee] = useUpdateEmployeeByIdMutation();
-  const [createLedger] = useCreateLedgerMutation();
+  const [createLedger] = useUpdateLedgerMutation();
   const {
     data: specificEmployee,
     isLoading: voucherLoading,

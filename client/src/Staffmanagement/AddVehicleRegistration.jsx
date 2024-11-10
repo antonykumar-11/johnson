@@ -102,15 +102,7 @@ const CreateEmployeeForm = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
-  const [askHelp, setAskHelp] = useState(false); // State to manage modal visibility
 
-  const openModalAsk = () => {
-    setAskHelp(true); // Function to open the modal
-  };
-
-  const closeModalAsk = () => {
-    setAskHelp(false); // Function to close the modal
-  };
   const handleSelect = (group) => {
     setFormData((prevData) => ({
       ...prevData,
@@ -211,7 +203,7 @@ const CreateEmployeeForm = () => {
         onSubmit={handleSubmit}
         className="max-w-[95%] mx-auto p-8 bg-gray-100 dark:bg-gray-900 rounded shadow-md  mt-10"
       >
-        <div className="grid grid-cols-1 gap-4 lg:grid-cols-5 sm:grid-cols-2 ">
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-5 sm:grid-cols-2 mb-4">
           <div className="lg:col-span-2 w-full bg-gray-900 text-white shadow-md rounded-md ">
             <div className="flex items-center space-x-4 p-4">
               <figure className="w-12 h-12 flex-shrink-0">
@@ -579,49 +571,6 @@ const CreateEmployeeForm = () => {
             >
               {isLoading ? "Creating..." : "Create Employee"}
             </button>
-          </div>
-          {askHelp && (
-            <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-70 overflow-y-auto">
-              <div className="bg-white lg:mr-24 rounded-lg p-6 md:p-8 max-w-lg md:max-w-6xl mx-auto relative shadow-lg border border-blue-300">
-                <button
-                  onClick={closeModalAsk} // Close modal when "Thank You" is clicked
-                  className="absolute top-2 right-2 bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 transition duration-200"
-                >
-                  Thank You
-                </button>
-                <h2 className="text-xl font-bold text-center mb-4 text-blue-600 tracking-wide">
-                  Information Guide
-                </h2>
-                <div className="overflow-y-auto max-h-[70vh]">
-                  {" "}
-                  {/* Limit height for scrolling */}
-                  <p className="text-sm mb-4 leading-relaxed tracking-wide">
-                    <span className="font-semibold">Who is :</span>ഈ എംപ്ലോയീ
-                    (Epmloyee) കമ്പനിയുടെ ആരാണെന്നാണ് ചോദിക്കുന്നത് Owner or
-                    Driver നമ്മൾ തിരഞ്ഞെടുക്കണം
-                  </p>
-                  <p className="text-sm mb-4 leading-relaxed tracking-wide">
-                    <span className="font-semibold">For Company :</span>ഈ
-                    എംപ്ലോയീ ( Employee) കമ്പനിക്ക് ആരാണെന്നാണ് ചോദിക്കുന്നത്
-                    നമ്മൾ പറയണം എന്താണോ ഈ ജോലിക്കാരന്റെ പേര് ( example : johnson
-                    ) അതിനോടൊപ്പം Salary എന്ന് കൊടുക്കണം. final ( Johnson
-                    Salary) .
-                  </p>
-                  <p className="text-sm mb-4 leading-relaxed tracking-wide">
-                    <span className="font-semibold">In group:</span>ഈ
-                    ജോലിക്കാരന് നമ്മൾ Johnson Salary എന്ന് കൊടുത്തു .ഇനി ഇത്
-                    എന്തിന്റെ കീഴിൽ എന്ന് പറഞ്ഞു കൊടുക്കണം . എല്ലായിപ്പോഴും ഇത്
-                    Indirect Expense ആയിരിക്കും . ഇത് കമ്പനിക്ക് ചിലവാണ് .
-                  </p>
-                </div>
-              </div>
-            </div>
-          )}
-          <div
-            onClick={openModalAsk} // On button click, open the modal
-            className="bg-blue-500 text-white px-4 py-1 text-center rounded hover:bg-blue-600 ml-2"
-          >
-            Any Help
           </div>
         </div>
       </form>

@@ -9,15 +9,16 @@ const CreteEoyeeGroup = () => {
   const { data: employees, error, isLoading, refetch } = useGetEmployeesQuery();
   const [createEmployeeGroup] = useCreateEmployeeGroupMutation();
   const navigate = useNavigate();
-  useEffect(() => {
-    refetch(); // Corrected the typo here
-  }, [refetch]);
   // Form state
   const [employee, setEmployee] = useState({ name: "", date: "", under: "" });
   const [avatar, setAvatar] = useState(null);
   const [avatarPreview, setAvatarPreview] = useState(
     "/images/default_avatar.png"
   );
+
+  useEffect(() => {
+    refetch();
+  }, [createEmployeeGroup]);
 
   // Handle image change
   const handleImageChange = (e) => {
@@ -52,6 +53,7 @@ const CreteEoyeeGroup = () => {
       setAvatar(null);
       setAvatarPreview("/images/default_avatar.png");
       navigate("/staff/payHeadDetails");
+      refetch();
     } catch (error) {
       toast.error("An error occurred!");
     }
@@ -61,12 +63,13 @@ const CreteEoyeeGroup = () => {
   if (error) return <p>Error: {error.message}</p>;
 
   return (
-    <div className="flex justify-center bg-gray-100 dark:bg-gray-900 p-4">
+    <div className=" flex  justify-center bg-gray-100  dark:bg-gray-900  p-4">
       <div className="w-full max-w-md p-6 bg-white dark:bg-gray-800 rounded-lg shadow-lg mt-40 mb-28">
         <h1 className="text-2xl font-bold mb-4 text-gray-900 dark:text-gray-100">
           Create Employee Department
         </h1>
 
+        {/* Form for adding/updating employee */}
         <div className="space-y-4">
           <div className="w-full max-w-md bg-gray-100 dark:bg-gray-900 shadow-md rounded-md mb-8">
             <div className="flex items-center space-x-4">
@@ -78,6 +81,7 @@ const CreteEoyeeGroup = () => {
                 />
               </figure>
               <div className="flex-1">
+                {/* Hidden input field */}
                 <input
                   type="file"
                   name="avatar"
@@ -85,6 +89,7 @@ const CreteEoyeeGroup = () => {
                   className="hidden"
                   id="customFile"
                 />
+                {/* Custom button to trigger file input */}
                 <label
                   htmlFor="customFile"
                   className="mt-1 block py-2 px-4 border border-gray-600 rounded-md text-sm font-medium bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100 cursor-pointer"
@@ -103,22 +108,6 @@ const CreteEoyeeGroup = () => {
             className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100 shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
           />
 
-          {/* Dropdown for "Under" field */}
-          <select
-            value={employee.under}
-            onChange={(e) =>
-              setEmployee({ ...employee, under: e.target.value })
-            }
-            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100 shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-          >
-            <option value="">Select Under</option>
-            {employees?.map((emp) => (
-              <option key={emp.id} value={emp.name}>
-                {emp.name}
-              </option>
-            ))}
-          </select>
-
           <button
             onClick={handleFormSubmit}
             className="w-full bg-blue-500 dark:bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
@@ -128,6 +117,7 @@ const CreteEoyeeGroup = () => {
         </div>
       </div>
 
+      {/* Toast Container */}
       <ToastContainer
         position="top-right"
         autoClose={3000}

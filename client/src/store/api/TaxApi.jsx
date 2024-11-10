@@ -4,7 +4,7 @@ export const taxApi = createApi({
   reducerPath: "taxApi",
 
   baseQuery: fetchBaseQuery({
-    baseUrl: `${import.meta.env.VITE_BACKEND_URL}/api/v1/emplyeesgroups/`,
+    baseUrl: `${import.meta.env.VITE_BACKEND_URL}/api/v1/emplyeesgroups`,
     prepareHeaders: (headers, { getState }) => {
       const state = getState();
       const token = state.auth?.user?.token || localStorage.getItem("token"); // Check both sources

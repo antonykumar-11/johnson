@@ -145,7 +145,7 @@ const Register = () => {
             className="w-full border border-gray-300 rounded-md p-2 text-gray-900 bg-opacity-20  focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
-        <div className="flex justify-between items-center">
+        <div className="flex justify-center items-center">
           <p className="mt-4 text-center text-gray-800">
             Already have an account?{" "}
             <Link
@@ -155,14 +155,14 @@ const Register = () => {
               Login
             </Link>
           </p>
-          <button
-            className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition duration-300"
-            type="submit"
-            disabled={isLoading}
-          >
-            {isLoading ? "Submitting..." : "Submit"}
-          </button>
         </div>
+        <button
+          className=" w-full  mt-4 bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition duration-300"
+          type="submit"
+          disabled={isLoading}
+        >
+          {isLoading ? "Submitting..." : "Submit"}
+        </button>
       </div>
     </form>
   );

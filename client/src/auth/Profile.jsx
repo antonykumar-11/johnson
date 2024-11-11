@@ -41,20 +41,18 @@ const Profile = () => {
   console.log("user", user);
   useEffect(() => {
     if (user) {
-      console.log("user", user);
+      console.log("Fetched user:", user);
       setUserData({
         name: user.user.name,
         email: user.user.email,
-        password: "",
+        password: "", // Ensure password is blank initially to prevent overwriting
         avatar: user.user.avatar,
         companyName: user.user.companyName || "",
-
         address1: user.user.address1 || "",
         address2: user.user.address2 || "",
         address3: user.user.address3 || "",
         address4: user.user.address4 || "",
         gstNumber: user.user.gstNumber || "",
-
         mobileNumber: user.user.mobileNumber || "",
         invoiceType: user.user.invoiceType || "",
         bankName: user.user.bankName || "",
@@ -64,7 +62,7 @@ const Profile = () => {
         branch: user.user.branch || "",
         pancardnumber: user.user.pancardnumber || "",
       });
-      setAvatarPreview(user.user.avatar); // Assuming user.avatar is the URL
+      setAvatarPreview(user.user.avatar); // Make sure avatar is set
     }
   }, [user]);
 
@@ -82,8 +80,12 @@ const Profile = () => {
       setUserData({ ...userData, [e.target.name]: e.target.value });
     }
   };
-
   const submitHandler = async (e) => {
+    e.preventDefault();
+
+    // Log form data to ensure it's correct
+    console.log("Form data to submit:", userData);
+
     e.preventDefault();
 
     const formData = new FormData();
@@ -110,6 +112,7 @@ const Profile = () => {
       if (id) {
         await patchUser({ id, data: formData }).unwrap();
       }
+      // Reset form after submission
       setUserData({
         name: "",
         email: "",

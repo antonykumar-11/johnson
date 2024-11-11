@@ -90,7 +90,7 @@ const Register = () => {
           />
           <label
             htmlFor="avatar"
-            className="ml-4 bg-blue-500 text-white px-4 py-2 rounded-md cursor-pointer hover:bg-blue-600 transition duration-300"
+            className="ml-4 bg-blue-500 text-gray-900 px-4 py-2 rounded-md cursor-pointer hover:bg-blue-600 transition duration-300"
           >
             Add Image
           </label>
@@ -112,7 +112,7 @@ const Register = () => {
             name="name"
             value={userData.name}
             onChange={onChange}
-            className="w-full border border-gray-300 rounded-md p-2 bg-white bg-opacity-20 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full border border-gray-300 rounded-md p-2 bg-white bg-opacity-20 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
         <div className="mb-4">
@@ -125,22 +125,10 @@ const Register = () => {
             name="email"
             value={userData.email}
             onChange={onChange}
-            className="w-full border border-gray-300 rounded-md p-2 bg-white bg-opacity-20 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full border border-gray-300 rounded-md p-2  bg-opacity-20 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
-        <div className="mb-4">
-          <label htmlFor="bio" className="block text-gray-800">
-            Bio
-          </label>
-          <input
-            type="text"
-            id="bio"
-            name="bio"
-            value={userData.bio}
-            onChange={onChange}
-            className="w-full border border-gray-300 rounded-md p-2 bg-white bg-opacity-20 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-        </div>
+
         <div className="mb-4">
           <label htmlFor="password" className="block text-gray-800">
             Password
@@ -151,14 +139,14 @@ const Register = () => {
             name="password"
             value={userData.password}
             onChange={onChange}
-            className="w-full border border-gray-300 rounded-md p-2 bg-white bg-opacity-20 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full border border-gray-300 rounded-md p-2 text-gray-900 bg-opacity-20  focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
         <div className="flex justify-between items-center">
           <p className="mt-4 text-center text-gray-800">
             Already have an account?{" "}
             <Link
-              className="text-indigo-300 hover:text-indigo-500 focus:outline-none"
+              className="text-indigo-700 hover:text-red-700 focus:outline-none"
               to="/login"
             >
               Login

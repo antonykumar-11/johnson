@@ -10,6 +10,7 @@ export default function Login() {
   const { login: setAuthTrue } = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [name, setName] = useState("Solaman Johnson"); // Example name, replace with actual name if available
   const [error, setError] = useState("");
   const [login, { isLoading: isLoggingIn }] = useLoginMutation();
   const navigate = useNavigate();
@@ -34,6 +35,14 @@ export default function Login() {
     }
   };
 
+  const getInitials = (name) => {
+    const nameArr = name.split(" ");
+    return nameArr
+      .map((n) => n[0])
+      .join("")
+      .toUpperCase(); // Gets the initials from the name
+  };
+
   return (
     <div
       className="flex items-center justify-center h-screen bg-cover bg-center"
@@ -43,6 +52,14 @@ export default function Login() {
         <h1 className="text-3xl font-bold mb-4 text-center text-black">
           Login
         </h1>
+
+        {/* Circular Avatar with Initials */}
+        <div className="flex justify-center mb-4">
+          <div className="w-16 h-16 bg-indigo-600 text-white rounded-full flex items-center justify-center text-xl">
+            {getInitials(name)}
+          </div>
+        </div>
+
         <div className="space-y-4">
           {error && <div className="text-red-500 text-center">{error}</div>}
           <div className="mb-4">
@@ -52,7 +69,7 @@ export default function Login() {
             <input
               type="email"
               id="email"
-              className="block w-full mt-1 p-2 text-gray-900 border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 bg-white bg-opacity-10 placeholder-gray-900"
+              className="block w-full border border-gray-300 rounded-md mt-1 p-2 text-gray-900  focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white bg-opacity-10 placeholder-gray-900"
               placeholder="Enter your email"
               onChange={(e) => setEmail(e.target.value)}
               value={email}
@@ -65,7 +82,7 @@ export default function Login() {
             <input
               type="password"
               id="password"
-              className="block w-full mt-1 p-2 text-gray-900 border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 bg-white bg-opacity-10 placeholder-gray-900"
+              className="block w-full mt-1 p-2 text-gray-900 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 bg-white bg-opacity-10 placeholder-gray-900"
               placeholder="Enter your password"
               onChange={(e) => setPassword(e.target.value)}
               value={password}
@@ -85,7 +102,7 @@ export default function Login() {
               Don't have an account?{" "}
               <Link
                 to="/register"
-                className="text-indigo-400 hover:underline transition duration-300"
+                className="text-indigo-800 hover:underline transition duration-300"
               >
                 Register
               </Link>

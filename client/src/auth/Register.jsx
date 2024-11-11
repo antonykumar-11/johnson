@@ -8,7 +8,7 @@ const Register = () => {
     name: "",
     email: "",
     password: "",
-    bio: "",
+
     avatar: "",
   });
   const [avatar, setAvatar] = useState("");
@@ -35,13 +35,7 @@ const Register = () => {
   const submitHandler = async (e) => {
     e.preventDefault();
 
-    if (
-      !userData.name ||
-      !userData.email ||
-      !userData.password ||
-      !userData.bio ||
-      !avatar
-    ) {
+    if (!userData.name || !userData.email || !userData.password || !avatar) {
       setError("All fields are required!");
       return;
     }
@@ -50,7 +44,7 @@ const Register = () => {
     formData.append("name", userData.name);
     formData.append("email", userData.email);
     formData.append("password", userData.password);
-    formData.append("bio", userData.bio);
+
     formData.append("avatar", avatar);
 
     try {

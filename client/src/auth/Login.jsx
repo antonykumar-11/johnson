@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import AuthContext from "../auth/AuthContext";
-import Image from "../auth/logo3.png";
+import Image from "../auth/logo3.png"; // Import your background image
 
 export default function Login() {
   const { login: setAuthTrue } = useContext(AuthContext);
@@ -29,17 +29,20 @@ export default function Login() {
         toast.error("Login failed. Please try again.");
       }
     } catch (error) {
-      const errorMessage =
-        error?.data?.message || "Invalid email or password. Please try again.";
+      const errorMessage = error?.data?.message || "Invalid email or password.";
       toast.error(errorMessage);
     }
   };
 
   return (
-    <div className="flex items-center justify-center h-screen bg-gradient-to-r from-purple-400 via-pink-500 to-red-500">
-      <div className="max-w-md w-full mx-auto p-8 bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg rounded-lg shadow-lg text-center">
-        <img src={Image} alt="Logo" className="w-24 h-24 mx-auto mb-4" />
-        <h1 className="text-3xl font-bold mb-4 text-white">Login</h1>
+    <div
+      className="flex items-center justify-center h-screen bg-cover bg-center"
+      style={{ backgroundImage: `url(${Image})` }}
+    >
+      <div className="max-w-md w-full mx-auto p-8 bg-white bg-opacity-20 backdrop-filter backdrop-blur-md rounded-lg shadow-lg">
+        <h1 className="text-3xl font-bold mb-4 text-center text-white">
+          Login
+        </h1>
         <div className="space-y-4">
           {error && <div className="text-red-500 text-center">{error}</div>}
           <div className="mb-4">
@@ -49,7 +52,7 @@ export default function Login() {
             <input
               type="email"
               id="email"
-              className="block w-full mt-1 border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 p-2 bg-white bg-opacity-20 text-white"
+              className="block w-full mt-1 p-2 border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 bg-white bg-opacity-20 text-white"
               onChange={(e) => setEmail(e.target.value)}
               value={email}
             />
@@ -61,7 +64,7 @@ export default function Login() {
             <input
               type="password"
               id="password"
-              className="block w-full mt-1 border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 p-2 bg-white bg-opacity-20 text-white"
+              className="block w-full mt-1 p-2 border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 bg-white bg-opacity-20 text-white"
               onChange={(e) => setPassword(e.target.value)}
               value={password}
             />
@@ -80,7 +83,7 @@ export default function Login() {
               Don't have an account?{" "}
               <Link
                 to="/register"
-                className="text-indigo-400 hover:underline focus:outline-none transition duration-300"
+                className="text-indigo-400 hover:underline transition duration-300"
               >
                 Register
               </Link>

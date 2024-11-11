@@ -16,7 +16,7 @@ const Register = () => {
   const [error, setError] = useState("");
   const [register, { isLoading }] = useRegisterMutation();
   const navigate = useNavigate();
-
+  // mani kutty
   const onChange = (e) => {
     if (e.target.name === "avatar") {
       const reader = new FileReader();

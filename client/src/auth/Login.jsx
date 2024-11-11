@@ -39,32 +39,34 @@ export default function Login() {
       className="flex items-center justify-center h-screen bg-cover bg-center"
       style={{ backgroundImage: `url(${Image})` }}
     >
-      <div className="max-w-md w-full mx-auto p-8 bg-white bg-opacity-20 backdrop-filter backdrop-blur-md rounded-lg shadow-lg">
-        <h1 className="text-3xl font-bold mb-4 text-center text-white">
+      <div className="max-w-md w-full mx-auto sm:mx-4 md:mx-4 p-4 sm:p-6 md:p-8 bg-white bg-opacity-20 backdrop-filter backdrop-blur-lg rounded-xl shadow-lg border border-white border-opacity-30">
+        <h1 className="text-3xl font-bold mb-4 text-center text-black">
           Login
         </h1>
         <div className="space-y-4">
           {error && <div className="text-red-500 text-center">{error}</div>}
           <div className="mb-4">
-            <label htmlFor="email" className="block text-gray-200">
+            <label htmlFor="email" className="block text-gray-900">
               Email
             </label>
             <input
               type="email"
               id="email"
-              className="block w-full mt-1 p-2 border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 bg-white bg-opacity-20 text-white"
+              className="block w-full mt-1 p-2 text-gray-900 border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 bg-white bg-opacity-10 placeholder-gray-900"
+              placeholder="Enter your email"
               onChange={(e) => setEmail(e.target.value)}
               value={email}
             />
           </div>
           <div className="mb-4">
-            <label htmlFor="password" className="block text-gray-200">
+            <label htmlFor="password" className="block text-gray-900">
               Password
             </label>
             <input
               type="password"
               id="password"
-              className="block w-full mt-1 p-2 border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 bg-white bg-opacity-20 text-white"
+              className="block w-full mt-1 p-2 text-gray-900 border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 bg-white bg-opacity-10 placeholder-gray-900"
+              placeholder="Enter your password"
               onChange={(e) => setPassword(e.target.value)}
               value={password}
             />
@@ -79,7 +81,7 @@ export default function Login() {
             </button>
           </div>
           <div className="text-center mt-4">
-            <p className="text-gray-200">
+            <p className="text-gray-900">
               Don't have an account?{" "}
               <Link
                 to="/register"
@@ -90,7 +92,6 @@ export default function Login() {
             </p>
           </div>
         </div>
-        {/* "hello" */}
         <ToastContainer />
       </div>
     </div>

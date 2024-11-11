@@ -75,9 +75,9 @@ const Register = () => {
     <form
       onSubmit={submitHandler}
       style={{ backgroundImage: `url(${Image})` }}
-      className="flex items-center justify-center h-screen bg-cover bg-center"
+      className="flex items-center justify-center h-screen bg-cover bg-center px-4"
     >
-      <div className="w-full max-w-md bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg rounded-xl p-6 shadow-lg">
+      <div className="w-full max-w-md bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg rounded-xl p-6 shadow-lg border border-red-500 border-opacity-30">
         <h1 className="text-3xl font-semibold mb-4 text-black text-center">
           User Profile Edit
         </h1>
@@ -110,6 +110,7 @@ const Register = () => {
             type="text"
             id="name"
             name="name"
+            placeholder="Enter your name"
             value={userData.name}
             onChange={onChange}
             className="w-full border border-gray-300 rounded-md p-2 bg-white bg-opacity-20 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -123,6 +124,7 @@ const Register = () => {
             type="email"
             id="email"
             name="email"
+            placeholder="Enter your Email"
             value={userData.email}
             onChange={onChange}
             className="w-full border border-gray-300 rounded-md p-2  bg-opacity-20 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -137,6 +139,7 @@ const Register = () => {
             type="password"
             id="password"
             name="password"
+            placeholder="Enter your password"
             value={userData.password}
             onChange={onChange}
             className="w-full border border-gray-300 rounded-md p-2 text-gray-900 bg-opacity-20  focus:outline-none focus:ring-2 focus:ring-blue-500"

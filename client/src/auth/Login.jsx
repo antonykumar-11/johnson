@@ -10,7 +10,7 @@ export default function Login() {
   const { login: setAuthTrue } = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [name, setName] = useState("Solaman Johnson"); // Example name, replace with actual name if available
+  const [name, setName] = useState("Solaman Johnson"); // Example name
   const [error, setError] = useState("");
   const [login, { isLoading: isLoggingIn }] = useLoginMutation();
   const navigate = useNavigate();
@@ -45,10 +45,10 @@ export default function Login() {
 
   return (
     <div
-      className="flex items-center justify-center h-screen bg-cover bg-center"
+      className="flex items-center justify-center h-screen bg-cover bg-center px-4" // Add padding for mobile
       style={{ backgroundImage: `url(${Image})` }}
     >
-      <div className="max-w-md w-full mx-auto sm:mx-4 md:mx-4 p-4 sm:p-6 md:p-8 bg-white bg-opacity-20 backdrop-filter backdrop-blur-lg rounded-xl shadow-lg border border-white border-opacity-30">
+      <div className="w-full max-w-md mx-auto p-4 sm:p-6 md:p-8 bg-white bg-opacity-20 backdrop-filter backdrop-blur-lg rounded-xl shadow-lg border border-red-500 border-opacity-30">
         <h1 className="text-3xl font-bold mb-4 text-center text-black">
           Login
         </h1>
@@ -69,7 +69,7 @@ export default function Login() {
             <input
               type="email"
               id="email"
-              className="block w-full border border-gray-300 rounded-md mt-1 p-2 text-gray-900  focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white bg-opacity-10 placeholder-gray-900"
+              className="block w-full border border-gray-300 rounded-md mt-1 p-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white bg-opacity-10 placeholder-gray-900"
               placeholder="Enter your email"
               onChange={(e) => setEmail(e.target.value)}
               value={email}

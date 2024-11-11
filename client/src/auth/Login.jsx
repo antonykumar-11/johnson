@@ -4,13 +4,13 @@ import { Link, useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import AuthContext from "../auth/AuthContext";
+import Image from "../auth/logo3.png";
 
 export default function Login() {
-  const { login: setAuthTrue } = useContext(AuthContext); // Use login function from context
+  const { login: setAuthTrue } = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-
   const [login, { isLoading: isLoggingIn }] = useLoginMutation();
   const navigate = useNavigate();
 
@@ -21,17 +21,14 @@ export default function Login() {
     }
     try {
       const response = await login({ email, password }).unwrap();
-      console.log("Response:", response);
-
       if (response.success) {
-        setAuthTrue({ ...response.user, token: response.token }); // Store user and token
+        setAuthTrue({ ...response.user, token: response.token });
         toast.success("Login successful!");
         navigate("/vouchers");
       } else {
         toast.error("Login failed. Please try again.");
       }
     } catch (error) {
-      console.error("Login error:", error);
       const errorMessage =
         error?.data?.message || "Invalid email or password. Please try again.";
       toast.error(errorMessage);
@@ -40,10 +37,9 @@ export default function Login() {
 
   return (
     <div className="flex items-center justify-center h-screen bg-gradient-to-r from-purple-400 via-pink-500 to-red-500">
-      <div className="max-w-md w-full mx-auto p-8 bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg rounded-lg shadow-lg">
-        <h1 className="text-3xl font-bold mb-4 text-center text-white">
-          Login
-        </h1>
+      <div className="max-w-md w-full mx-auto p-8 bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg rounded-lg shadow-lg text-center">
+        <img src={Image} alt="Logo" className="w-24 h-24 mx-auto mb-4" />
+        <h1 className="text-3xl font-bold mb-4 text-white">Login</h1>
         <div className="space-y-4">
           {error && <div className="text-red-500 text-center">{error}</div>}
           <div className="mb-4">

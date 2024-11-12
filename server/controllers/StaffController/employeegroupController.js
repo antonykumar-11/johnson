@@ -3,8 +3,6 @@ const Employee = require("../../models/staffmodel/EmployeeGroup");
 
 const mongoose = require("mongoose");
 
-const Employeegroup = require("../models/staffmodel/EmployeeGroup");
-
 exports.createEmployeeGroup = async (req, res) => {
   try {
     const { name, date } = req.body;

@@ -5,7 +5,6 @@ const employeeGroupSchema = new Schema({
   name: {
     type: String,
     required: true,
-    unique: true, // Ensure the name is unique
   },
 
   owner: {

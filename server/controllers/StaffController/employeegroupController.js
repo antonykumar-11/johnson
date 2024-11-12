@@ -3,6 +3,8 @@ const Employee = require("../../models/staffmodel/EmployeeGroup");
 
 const mongoose = require("mongoose");
 
+const Employeegroup = require("../models/staffmodel/EmployeeGroup");
+
 exports.createEmployeeGroup = async (req, res) => {
   try {
     const { name, date } = req.body;
@@ -18,14 +20,15 @@ exports.createEmployeeGroup = async (req, res) => {
       avatar = `${BASE_URL}/uploads/user/${req.file.originalname}`;
     }
 
-    const employeeGroup = new Employee({
+    // Create a new employee group
+    const employeeGroup = new Employeegroup({
       name,
       date,
-
       owner: req.user.id, // Set owner to the authenticated user's ID
       avatar, // Add avatar to the employee group
     });
 
+    // Save the employee group to the database
     await employeeGroup.save();
     res.status(201).json(employeeGroup);
   } catch (err) {

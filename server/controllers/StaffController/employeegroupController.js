@@ -5,7 +5,7 @@ const mongoose = require("mongoose");
 
 exports.createEmployeeGroup = async (req, res) => {
   try {
-    const { name, date, under } = req.body;
+    const { name, date } = req.body;
 
     // Set the base URL dynamically
     let avatar;
@@ -21,7 +21,7 @@ exports.createEmployeeGroup = async (req, res) => {
     const employeeGroup = new Employee({
       name,
       date,
-      under, // Add 'under' field to the employee group
+
       owner: req.user.id, // Set owner to the authenticated user's ID
       avatar, // Add avatar to the employee group
     });

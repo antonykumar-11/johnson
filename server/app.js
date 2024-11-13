@@ -12,10 +12,10 @@ dotenv.config({ path: path.join(__dirname, "config/config.env") });
 const corsOptions = {
   origin: [
     "https://johnson-dc80.onrender.com",
-    "http://localhost:5173", // Local Vite
-    "http://localhost:5174", // Additional local ports
-    "https://www.alphacranesalpha.in", // Vercel frontend
-    process.env.FRONTEND_URL, // Any other live frontend
+    "http://localhost:5173",
+    "http://localhost:5174",
+    "https://www.alphacranesalpha.in",
+    process.env.FRONTEND_URL,
   ],
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true,
@@ -124,9 +124,9 @@ app.use("/api/v1/profits", require("./routes/monthProfit")); // personal app
 
 // Serve static files in production
 if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "../frontend/build")));
+  app.use(express.static(path.join(__dirname, "../frontend/dist")));
   app.get("*", (req, res) => {
-    res.sendFile(path.resolve(__dirname, "../frontend/build/index.html"));
+    res.sendFile(path.resolve(__dirname, "../frontend/dist/index.html"));
   });
 }
 

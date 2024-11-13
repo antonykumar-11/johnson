@@ -52,31 +52,24 @@ const userSchema = new mongoose.Schema({
   },
   role: {
     type: String,
-    default: "user",
   },
   bankName: {
     type: String,
-    default: "user",
   },
   accountNumber: {
     type: String,
-    default: "user",
   },
   description: {
     type: String,
-    default: "user",
   },
   ifsc: {
     type: String,
-    default: "user",
   },
   branch: {
     type: String,
-    default: "user",
   },
   pancardnumber: {
     type: String,
-    default: "user",
   },
   resetPasswordToken: String,
   resetPasswordTokenExpire: Date,

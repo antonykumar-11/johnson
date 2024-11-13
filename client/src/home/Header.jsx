@@ -68,14 +68,6 @@ const Header = ({ toggleSidebar }) => {
           )}
         </button>
       </div>
-      {/* Sidebar toggle button for small screens */}
-      <button
-        className="md:hidden p-2"
-        onClick={toggleSidebar}
-        aria-label="Toggle sidebar"
-      >
-        <MenuIcon size={24} />
-      </button>
 
       <button
         onClick={() => setModalOpen(true)}
@@ -87,6 +79,14 @@ const Header = ({ toggleSidebar }) => {
         isOpen={isModalOpen}
         onClose={() => setModalOpen(false)}
       />
+      {/* Sidebar toggle button for small screens */}
+      <button
+        className="md:hidden p-2"
+        onClick={toggleSidebar}
+        aria-label="Toggle sidebar"
+      >
+        <MenuIcon size={24} />
+      </button>
     </header>
   );
 };

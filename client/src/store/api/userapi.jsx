@@ -56,11 +56,12 @@ export const userApi = createApi({
     }),
     deleteUser: builder.mutation({
       query: (id) => ({
-        url: `user/users/${id}`,
+        url: `auth/delete/${id}`, // Ensure this matches your actual backend route
         method: "DELETE",
       }),
       invalidatesTags: (result, error, id) => [{ type: "User", id }],
     }),
+
     // New login endpoint
     login: builder.mutation({
       query: (credentials) => ({

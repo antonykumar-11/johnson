@@ -173,7 +173,7 @@ const CreateEmployeeForm = () => {
       navigate("/staff/payHeadDetails");
     } catch (error) {
       console.error("Failed to save ledger or employee: ", error);
-      toast.error("Failed to save ledger or employee.");
+      toast.error(error.data.message);
     }
   };
 

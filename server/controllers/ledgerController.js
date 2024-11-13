@@ -200,7 +200,7 @@ exports.getLedgerById = async (req, res) => {
 exports.updateLedger = async (req, res) => {
   try {
     const updatedLedger = await Ledger.findOneAndUpdate(
-      { _id: req.params.id, owner: req.user.id }, // Filter by owner
+      { _id: req.params.id }, // Filter by owner
       req.body,
       { new: true }
     );

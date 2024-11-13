@@ -19,7 +19,7 @@ exports.createEmployeeGroup = async (req, res) => {
     }
 
     // Create a new employee group
-    const employeeGroup = new Employeegroup({
+    const employeeGroup = new Employee({
       name,
       date,
       owner: req.user.id, // Set owner to the authenticated user's ID
@@ -31,7 +31,7 @@ exports.createEmployeeGroup = async (req, res) => {
     res.status(201).json(employeeGroup);
   } catch (err) {
     if (err.code === 11000) {
-      // Duplicate key error
+      // Duplicate key error (due to compound index on name and owner)
       return res
         .status(400)
         .json({ message: "Employee group name must be unique per user." });

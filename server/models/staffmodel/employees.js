@@ -18,6 +18,9 @@ const employeeCreateSchema = new Schema({
     type: String,
     required: true, // Ensure name is required
   },
+  userName: {
+    type: String,
+  },
   name: {
     type: String,
     required: true, // Ensure name is required

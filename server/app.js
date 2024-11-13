@@ -11,7 +11,7 @@ dotenv.config({ path: path.join(__dirname, "config/config.env") });
 // CORS options
 const corsOptions = {
   origin: [
-    "https://accounting-invoice.onrender.com", // Deployed backend
+    "https://accounting-invoice.onrender.com",
     "http://localhost:5173", // Local Vite
     "http://localhost:5174", // Additional local ports
     "https://www.alphacranesalpha.in", // Vercel frontend

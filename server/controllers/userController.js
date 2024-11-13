@@ -6,7 +6,6 @@ const sendToken = require("../utils/jwt");
 const crypto = require("crypto");
 
 exports.registerUser = catchAsyncError(async (req, res, next) => {
-  console.log("req.body", req.body);
   const { name, email, password } = req.body;
 
   // Check if the user already exists
@@ -180,12 +179,12 @@ exports.updateProfile = catchAsyncError(async (req, res, next) => {
   let newUserData = {
     name: req.body.name,
     email: req.body.email,
-    companyName: req.body.companyName,
-    invoiceType: req.body.invoiceType, // Added this line
-    address1: req.body.address1, // Added this line
-    address2: req.body.address2, // Added this line
-    address3: req.body.address3, // Added this line
-    address4: req.body.address4, // Added this line
+    companyName: req.body.companyName, // Ensures companyName is a string
+    invoiceType: req.body.invoiceType,
+    address1: req.body.address1,
+    address2: req.body.address2,
+    address3: req.body.address3,
+    address4: req.body.address4,
     gstNumber: req.body.gstNumber,
     mobileNumber: req.body.mobileNumber,
     bankName: req.body.bankName,
@@ -260,16 +259,19 @@ exports.updateUser = catchAsyncError(async (req, res, next) => {
   });
 });
 
-//Admin: Delete User - api/v1/admin/user/:id
+// Delete User Controller
 exports.deleteUser = catchAsyncError(async (req, res, next) => {
   const user = await User.findById(req.params.id);
   if (!user) {
     return next(
-      new ErrorHandler(`User not found with this id ${req.params.id}`)
+      new ErrorHandler(`User not found with ID: ${req.params.id}`, 404)
     );
   }
+
   await user.remove();
+
   res.status(200).json({
     success: true,
+    message: "User deleted successfully",
   });
 });

@@ -14,6 +14,7 @@ const Profile = () => {
     password: "",
     avatar: "",
     companyName: "",
+    mobileNumber: "",
     invoiceType: "",
     description:
       "i/we hereby declare that since our aggregate turnover in any preceding financial year from 2024-25 onwords is not more than the aggregate turnover notified under sub-rule(4) of rule 48 , we are required to prepare an invoice in terms of the provisions of the said sub-rule",
@@ -92,9 +93,9 @@ const Profile = () => {
     formData.append("name", userData.name);
     formData.append("email", userData.email);
     formData.append("password", userData.password);
-    formData.append("avatar", avatar);
+    formData.append("avatar", userData.avatar);
     formData.append("companyName", userData.companyName);
-
+    formData.append("mobileNumber", userData.mobileNumber);
     formData.append("gstNumber", userData.gstNumber);
     formData.append("address1", userData.address1);
     formData.append("address2", userData.address2);
@@ -144,7 +145,7 @@ const Profile = () => {
   return (
     <form
       onSubmit={submitHandler}
-      className="flex items-center  justify-center h-screen bg-gradient-to-r from-purple-400 via-pink-500 to-red-500"
+      className="flex items-center justify-center min-h-screen bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 p-4"
     >
       <div className="w-full max-w-6xl bg-white -mt-24 bg-opacity-10 backdrop-filter backdrop-blur-lg rounded-xl p-6 shadow-lg">
         <h1 className="text-3xl font-semibold mb-4 text-white text-center">
@@ -386,9 +387,9 @@ const Profile = () => {
             className="w-full border border-gray-300 rounded-md p-2 bg-white bg-opacity-20 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
-        <div className="flex justify-between items-center">
+        <div className="flex flex-col sm:flex-row sm:justify-between items-center mt-6">
           <button
-            className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition duration-300"
+            className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition duration-300 w-full sm:w-auto"
             type="submit"
             disabled={isLoading || isUpdating}
           >
@@ -397,7 +398,7 @@ const Profile = () => {
           {id && (
             <button
               onClick={deleteHandler}
-              className="mt-4 bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition duration-300"
+              className="mt-4 sm:mt-0 bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition duration-300 w-full sm:w-auto"
               disabled={isDeleting}
             >
               {isDeleting ? "Deleting..." : "Delete User"}

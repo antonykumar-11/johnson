@@ -8,7 +8,6 @@ const connectDatabase = require("./config/database");
 // Load environment variables
 dotenv.config({ path: path.join(__dirname, "config/config.env") });
 
-// CORS options
 const corsOptions = {
   origin: [
     "https://johnson-dc80.onrender.com",

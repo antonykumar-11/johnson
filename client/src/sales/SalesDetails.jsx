@@ -1408,7 +1408,7 @@ const SalesVoucher = () => {
         {isModalOpen && (
           <CreateCompanyModal
             closeModal={closeModal}
-            onComapnyCreate={handleCompanyCreation}
+            onCompanyCreate={handleCompanyCreation} // correct spelling here
             isLoading={isLoading}
             themeMode="dark"
           />

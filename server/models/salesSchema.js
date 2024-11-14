@@ -167,6 +167,8 @@ SaleSchema.pre("save", async function (next) {
 
   next();
 });
+// Create a unique index on the owner field only
+SaleSchema.index({ owner: 1 }, { unique: true });
 
 // Create and export the Sale model
 const Sales = mongoose.model("Sales", SaleSchema);

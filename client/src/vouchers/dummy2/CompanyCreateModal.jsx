@@ -3,7 +3,7 @@ import React, { useState, useRef } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-function CreateCompany({ closeModal, onCompanyCreate, isLoading }) {
+function CreateCompanyModal({ closeModal, onCompanyCreate, isLoading }) {
   console.log("closeModal", closeModal);
   console.log("onCompanyCreate", onCompanyCreate);
   console.log("isLoading", isLoading);
@@ -828,4 +828,4 @@ function CreateCompany({ closeModal, onCompanyCreate, isLoading }) {
   );
 }
 
-export default CreateCompany;
+export default CreateCompanyModal;

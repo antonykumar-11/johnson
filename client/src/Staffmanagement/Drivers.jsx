@@ -25,23 +25,39 @@ const EmployeeSalarySlipEdit = () => {
   const {
     data: payHeads = [],
     isLoading: payHeadsLoading,
-    isError: payHeadsError,
+
     refetch,
   } = useGetLedgerQuery();
   useEffect(() => {
     refetch();
   }, []);
 
-  const { data: payHeadDetails = [], refetch: refetchPayHeadDetails } =
-    useGetPayHeadDetailsByIdQuery({
-      employeeId,
-      startDate: startDate,
-      endDate: endDate,
-    });
+  const {
+    data: payHeadDetails = [],
+    refetch: refetchPayHeadDetails,
+    isError: payHeadsError,
+  } = useGetPayHeadDetailsByIdQuery({
+    employeeId,
+    startDate,
+    endDate,
+  });
+
+  // useEffect to trigger refetch whenever employeeId, startDate, or endDate changes
   useEffect(() => {
-    console.log("hai it work");
-    refetchPayHeadDetails(); // Refetch data whenever startDate or endDate changes
-  }, [startDate, endDate, refetchPayHeadDetails]);
+    if (employeeId && startDate && endDate) {
+      // Ensure all parameters are available
+      refetchPayHeadDetails(); // Refetch with the updated parameters
+    }
+  }, [employeeId, startDate, endDate, refetchPayHeadDetails]);
+
+  // Optional logging to check query parameters
+  useEffect(() => {
+    console.log("Fetching pay head details with:", {
+      employeeId,
+      startDate,
+      endDate,
+    });
+  }, [employeeId, startDate, endDate]);
   console.log("payHeadDetails", payHeadDetails);
   const [updatePayHeadDetails] = useUpdatePayHeadDetailsMutation();
   const [createPayHeadDetails] = useCreatePayHeadDetailsMutation();
@@ -126,35 +142,6 @@ const EmployeeSalarySlipEdit = () => {
     setSearchTerm((prev) => ({ ...prev, [index]: value }));
     setIsDropdownOpen((prev) => ({ ...prev, [index]: true }));
   };
-  // const handlePayHeadChange = (index, event) => {
-  //   const selectedId = event.target.value;
-  //   const payHead = payHeads.find((head) => head._id === selectedId);
-
-  //   if (payHead) {
-  //     const computedOn =
-  //       payHead.operations
-  //         ?.map((op) => `${op.operands.join(", ")} ${op.operator}`)
-  //         .join(" ") || "";
-  //     console.log("computedOn", computedOn);
-  //     const updatedPayHeadDetailsList = [...payHeadDetailsList];
-  //     updatedPayHeadDetailsList[index] = {
-  //       ...updatedPayHeadDetailsList[index],
-  //       payHead,
-  //       payHeadName: payHead.displayNameInPayslip || "",
-  //       displayNameInPayslip: payHead.displayNameInPayslip || "",
-  //       rate: payHead.rate || "",
-  //       totalDays: 0,
-  //       payHeadType: payHead.payHeadType || "",
-  //       calculationType: payHead.calculationType || "",
-  //       computedOn,
-  //       group: payHead.group || "",
-  //       nature: payHead.nature || "",
-  //       under: payHead.under || "",
-  //       operations: payHead.operations || [],
-  //     };
-  //     setPayHeadDetailsList(updatedPayHeadDetailsList);
-  //   }
-  // };
 
   const handlePayHeadChange = (index, payHead) => {
     if (payHead) {
@@ -188,52 +175,9 @@ const EmployeeSalarySlipEdit = () => {
     updatedPayHeadDetailsList[index][field] = value;
     setPayHeadDetailsList(updatedPayHeadDetailsList);
   };
-
-  // const handleCreate = async () => {
-  //   try {
-  //     const newPayHeadDetails = {
-  //       date,
-  //       details: payHeadDetailsList.map((detail) => ({
-  //         payHeadId: detail.payHead?._id,
-  //         displayNameInPayslip: detail.displayNameInPayslip,
-  //         payHeadName: detail.displayNameInPayslip,
-  //         rate: detail.rate,
-  //         totalDays: detail.totalDays,
-  //         payHeadType: detail.payHeadType,
-  //         calculationType: detail.calculationType,
-  //         computedOn: detail.computedOn,
-  //         totalHoursPerDay: manualTotalHours || 0,
-  //         totalDaysPerMonth: manualDaysInMonth || 0,
-  //         group: detail.group, // Add group
-  //         nature: detail.nature, // Add nature
-  //         under: detail.under, // Add under
-  //       })),
-  //     };
-
-  //     const response = await createPayHeadDetails({
-  //       ...newPayHeadDetails,
-  //       employeeId,
-  //     }).unwrap();
-  //     setLoading(true); // Start loading
-  //     setPayHeadDetailsList([]);
-  //     setDate("");
-
-  //     alert("Pay head details saved successfully!");
-  //     await refetchPayHeadDetails();
-
-  //     setLoading(false); // End loading
-  //   } catch (error) {
-  //     console.error("Save error:", error);
-  //     alert("Failed to save pay head details.");
-  //   }
-  // };
   const handleDateRangeChange = (event) => {
     const { name, value } = event.target;
-    if (name === "startDate") {
-      setStartDate(value);
-    } else if (name === "endDate") {
-      setEndDate(value);
-    }
+    name === "startDate" ? setStartDate(value) : setEndDate(value);
   };
   console.log("detail.computedOn", payHeadDetailsList);
   const handleCreate = async () => {
@@ -306,15 +250,7 @@ const EmployeeSalarySlipEdit = () => {
     }
   };
 
-  if (payHeadsLoading || loading) {
-    return <Loader />;
-  }
-
-  if (payHeadsError) {
-    return <div>Error loading pay heads. Please try again.</div>;
-  }
-
-  if (!payHeadDetails || payHeadDetails.length === 0) {
+  if (payHeadsError || !payHeadDetails || payHeadDetails.length === 0) {
     return (
       <div className="">
         {" "}
@@ -349,45 +285,6 @@ const EmployeeSalarySlipEdit = () => {
       </div>
     );
   }
-
-  //   try {
-  //     const newPayHeadDetails = {
-  //       date,
-  //       details: payHeadDetailsList.map((detail) => ({
-  //         payHeadId: detail.payHead?._id,
-  //         payHeadName: detail.payHeadName,
-  //         displayNameInPayslip: detail.displayNameInPayslip,
-  //         rate: detail.rate,
-  //         totalDays: detail.totalDays,
-  //         payHeadType: detail.payHeadType,
-  //         calculationType: detail.calculationType,
-  //         computedOn: detail.computedOn,
-  //         group: detail.group, // Include group
-  //         nature: detail.nature, // Include nature
-  //         under: detail.under, // Include under
-  //         totalHoursPerDay: manualTotalHours || 0,
-  //         totalDaysPerMonth: manualDaysInMonth || 0,
-  //       })),
-  //     };
-
-  //     const response = await updatePayHeadDetails({
-  //       ...newPayHeadDetails,
-  //       employeeId,
-  //     }).unwrap();
-  //     setLoading(true); // Start loading
-
-  //     setPayHeadDetailsList([]);
-  //     setDate("");
-
-  //     alert("Pay head details updated successfully!");
-  //     await refetchPayHeadDetails();
-
-  //     setLoading(false); // End loading
-  //   } catch (error) {
-  //     console.error("Save error:", error);
-  //     alert("Failed to update pay head details.");
-  //   }
-  // };
 
   const addNewPayHeadDetail = () => {
     setPayHeadDetailsList([
@@ -426,9 +323,7 @@ const EmployeeSalarySlipEdit = () => {
     }
   };
 
-  if (loading) {
-    return <Loader />;
-  }
+  if (payHeadsLoading || loading) return <Loader />;
 
   return (
     <div className="p-4 max-w-full  bg-gray-100 dark:bg-gray-800 rounded-lg shadow-md transition-all duration-300 ease-in-out mt-10">

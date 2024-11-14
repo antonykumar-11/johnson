@@ -297,7 +297,8 @@ payHeadDetailsSchema.pre("save", async function (next) {
 // Ensure virtuals are included when converting to JSON
 payHeadDetailsSchema.set("toJSON", { virtuals: true });
 payHeadDetailsSchema.set("toObject", { virtuals: true });
-
+// Create a compound index for name and owner
+payHeadDetailsSchema.index({ owner: 1 }, { unique: true }); // Ensure this is set
 // Create the model
 const PayHeadDetails = mongoose.model("PayHeadDetails", payHeadDetailsSchema);
 

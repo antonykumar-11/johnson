@@ -37,21 +37,22 @@ export const payHeadDetailsApi = createApi({
       query: ({ employeeId, date, startDate, endDate } = {}) => {
         const params = new URLSearchParams();
 
-        if (employeeId) params.append("employeeId", employeeId);
         if (date) params.append("date", date);
         if (startDate) params.append("startDate", startDate);
         if (endDate) params.append("endDate", endDate);
 
-        const url = `payHeadDetails${
-          params.toString() ? `?${params.toString()}` : ""
-        }`;
+        // Include employeeId in the path if provided
+        const url = employeeId
+          ? `payHeadDetails/${employeeId}?${params.toString()}`
+          : `payHeadDetails?${params.toString()}`;
+
         return url;
       },
     }),
 
     createPayHeadDetails: builder.mutation({
-      query: (newPayHeadDetails) => ({
-        url: "payHeadDetails",
+      query: ({ employeeId, newPayHeadDetails }) => ({
+        url: `payHeadDetails/${employeeId}`,
         method: "POST",
         body: newPayHeadDetails,
       }),

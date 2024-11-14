@@ -377,7 +377,6 @@ const EmployeeSalarySlipEdit = () => {
     updatedPayHeadDetailsList[index][field] = value;
     setPayHeadDetailsList(updatedPayHeadDetailsList);
   };
-
   const handleSave = async () => {
     try {
       const newPayHeadDetails = {
@@ -393,16 +392,17 @@ const EmployeeSalarySlipEdit = () => {
           computedOn: detail.computedOn,
           totalHoursPerDay: manualTotalHours || 0,
           totalDaysPerMonth: manualTotalDays || 0,
-          group: detail.group, // Add group
-          nature: detail.nature, // Add nature
-          under: detail.under, // Add under
+          group: detail.group,
+          nature: detail.nature,
+          under: detail.under,
         })),
       };
 
       const response = await createPayHeadDetails({
-        ...newPayHeadDetails,
-        employeeId,
+        employeeId, // Pass employeeId separately
+        newPayHeadDetails, // Pass newPayHeadDetails as an object
       }).unwrap();
+
       console.log("Save response:", response);
       setLoading(true); // Start loading
       setPayHeadDetailsList([]);

@@ -182,6 +182,8 @@ exports.getAllLedgersallPurchase = async (req, res) => {
 
 // Get a single ledger by ID
 exports.getLedgerById = async (req, res) => {
+  console.log(" _id: req.params.id,", req.params.id);
+  console.log(" _id: req.params.id,", req.user.id);
   try {
     const ledger = await Ledger.findOne({
       _id: req.params.id,

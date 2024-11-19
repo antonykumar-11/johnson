@@ -25,13 +25,13 @@ export const staffApi = createApi({
     getEmployeeDetailsById: builder.query({
       query: (id) => `/employees/${id}`,
     }),
-    // Endpoint to delete employee by ID
     deleteEmployeeById: builder.mutation({
       query: (id) => ({
         url: `/employees/${id}`,
         method: "DELETE",
       }),
     }),
+
     // Endpoint to create a new employee
     createEmployee: builder.mutation({
       query: (formDataToSubmit) => ({

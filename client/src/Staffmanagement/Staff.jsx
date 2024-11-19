@@ -138,11 +138,11 @@ const CreateEmployeeForm = () => {
     // Prepare ledger data from formData
     const ledgerData = {
       payHeadType: "Staff",
-      name: formData.stockName, // Ensure this field is populated correctly
-      under: formData.underForLedger, // Reference to the selected group/ledger
-      group: formData.group, // Group name
-      nature: formData.nature, // Nature (e.g., Debit/Credit)
-      category: formData.category, // Category associated with the ledger
+      name: formData.stockName?.trim(), // Ensure the name is trimmed and non-empty
+      under: formData.underForLedger,
+      group: formData.group,
+      nature: formData.nature,
+      category: formData.category,
     };
 
     try {
@@ -150,11 +150,17 @@ const CreateEmployeeForm = () => {
       const ledgerResponse = await createLedger(ledgerData).unwrap();
       console.log("Ledger created successfully", ledgerResponse);
 
-      // Prepare employee data, for example, using FormData
+      // Extract the ledger ID from the response
+      const ledgerId = ledgerResponse._id;
+
+      // Prepare employee data, using FormData for file handling
       const formDataToSubmit = new FormData();
       Object.keys(formData).forEach((key) => {
         formDataToSubmit.append(key, formData[key]);
       });
+
+      // Append ledger ID to the employee data
+      formDataToSubmit.append("ledger", ledgerId);
 
       // Optionally append an avatar if available
       if (avatar) {
@@ -165,15 +171,13 @@ const CreateEmployeeForm = () => {
       const employeeResponse = await createEmployee(formDataToSubmit).unwrap();
       console.log("Employee created successfully", employeeResponse);
 
-      // After successful creation
+      // Success toast and post-operation cleanup
       toast.success("Employee and Ledger saved successfully!");
-
-      // Reset form data and navigate
       resetFormData();
       navigate("/staff/payHeadDetails");
     } catch (error) {
       console.error("Failed to save ledger or employee: ", error);
-      toast.error(error.data.message);
+      toast.error(error?.data?.message || "An unexpected error occurred.");
     }
   };
 

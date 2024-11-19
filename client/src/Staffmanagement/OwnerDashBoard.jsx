@@ -4,7 +4,7 @@ import { useFetchEmployeeGroupsQuery } from "../store/api/EmployeeGroupApi";
 import { useGetAllEmployeesQuery } from "../store/api/StaffApi";
 import Image from "../assets/logo.png";
 
-const EmployeeGroupDetail = () => {
+const OwnerDashBoard = () => {
   const { groupId } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
@@ -53,7 +53,7 @@ const EmployeeGroupDetail = () => {
             <div
               key={employee._id}
               className="flex items-center space-x-4 p-4 bg-white dark:bg-gray-800 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 cursor-pointer border border-gray-300 dark:border-gray-600"
-              onClick={() => navigate(`/staff/employee/${employee._id}`)} // Navigate to employee details page
+              onClick={() => navigate(`/staff/owneredit/${employee._id}`)}
             >
               <figure className="w-24 h-24 flex-shrink-0">
                 <img
@@ -97,4 +97,4 @@ const EmployeeGroupDetail = () => {
   );
 };
 
-export default EmployeeGroupDetail;
+export default OwnerDashBoard;

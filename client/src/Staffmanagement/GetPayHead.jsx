@@ -96,14 +96,23 @@ const CombinedDataDisplay = () => {
                 <th className="py-2 px-4 text-left">Actions</th>
               </tr>
             </thead>
+
             <tbody>
               {filteredGroups?.length ? (
                 filteredGroups.map((group, index) => (
                   <tr
                     key={group._id}
                     className="hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
-                    onClick={() => navigate(`/staff/dashboard/${group._id}`)} // Redirect to the group details page
+                    onClick={() => {
+                      // Conditionally redirect based on registrationType
+                      if (group.name === "Driver") {
+                        navigate(`/staff/dashboard/${group._id}`); // Redirect for employee
+                      } else if (group.name === "Owner") {
+                        navigate(`/staff/owner/${group._id}`); // Redirect for Owner
+                      }
+                    }}
                   >
+                    {console.log("group", group)}
                     <td className="py-2 px-4">{index + 1}</td>
                     <td className="py-2 px-4">{group.name}</td>
                     <td className="py-2 px-4">

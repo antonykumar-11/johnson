@@ -6,7 +6,7 @@ import {
 } from "../store/api/StaffApi";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-const EmployeeDetail = () => {
+const OwnerEdit = () => {
   const { employeeId } = useParams();
   const navigate = useNavigate();
 
@@ -24,7 +24,6 @@ const EmployeeDetail = () => {
   useEffect(() => {
     refetch();
   }, [refetch]);
-  console.log("employee", employee);
   useEffect(() => {
     if (employee) {
       console.log("employee", employee);
@@ -75,7 +74,7 @@ const EmployeeDetail = () => {
   if (!employee) return <p>Employee not found.</p>;
 
   const handleUpdate = () => {
-    navigate(`/staff/staff/all/${employeeId}`); // Redirect to the staff page
+    navigate(`/staff/staff/ownerAllEdir/${employeeId}`); // Redirect to the staff page
   };
 
   const handleDelete = async () => {
@@ -108,7 +107,7 @@ const EmployeeDetail = () => {
         <div className="flex items-center space-x-6 mb-6">
           <img
             src={employee.avatar || "https://via.placeholder.com/100"}
-            alt={employee.name || formData.ownerName}
+            alt={employee.userName || formData.userName}
             className="w-24 h-24 object-cover rounded-full border border-gray-600 dark:border-gray-400"
           />
           <div>
@@ -116,10 +115,10 @@ const EmployeeDetail = () => {
               className="text-3xl font-bold text-gray-900 dark:text-gray-100"
               style={{ fontFamily: "'Orbitron', sans-serif" }}
             >
-              {formData.ownerName || employee.name}
+              {formData.userName || employee.userName}
             </h2>
             <p className="text-lg text-gray-600 dark:text-gray-400">
-              For Company: {formData.registrationType || "Owner of Vehicle"}
+              For Company: {formData.underEmployee || "Owner of Vehicle"}
             </p>
             <p className="text-lg text-gray-600 dark:text-gray-400">
               Employee ID: {employee.employeeId || "Owner of Vehicle"}
@@ -141,7 +140,7 @@ const EmployeeDetail = () => {
             {/* Left Column */}
             <div>
               <div>
-                <p>Name : {formData.ownerName || employee.name}</p>
+                <p>Name: {formData.userName || employee.userName}</p>
                 <p className="text-sm text-gray-600 dark:text-gray-400">
                   {employee.dateOfBirth
                     ? `Date of Birth: ${new Date(
@@ -223,9 +222,7 @@ const EmployeeDetail = () => {
                 <p className="text-gray-700 dark:text-gray-400">
                   PF Number: {formData.pfAccountNumber}
                 </p>
-                <p className="text-gray-700 dark:text-gray-400">
-                  PR Number: {formData.prAccountNumber}
-                </p>
+
                 <p className="text-gray-700 dark:text-gray-400">
                   ESI Number: {formData.esiNumber}
                 </p>
@@ -283,4 +280,4 @@ const EmployeeDetail = () => {
   );
 };
 
-export default EmployeeDetail;
+export default OwnerEdit;

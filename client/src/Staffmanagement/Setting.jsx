@@ -490,7 +490,21 @@ const SpecificEmployeeSalaryCalculator = () => {
       startDate: startDate,
       endDate: endDate,
     });
-
+  useEffect(() => {
+    if (Array.isArray(totals)) {
+      console.log(
+        "Individual Duty Hours:",
+        totals.map((item) => item.dutyHours)
+      );
+      const totalDutyHours = totals.reduce(
+        (acc, item) => acc + item.dutyHours,
+        0
+      );
+      console.log("Total Duty Hours:", totalDutyHours);
+    } else {
+      console.log("No attendance data available.");
+    }
+  }, [totals]);
   const { data: usersListUser, refetch } = useGetSingleUserQuery(employeeId);
   useEffect(() => {
     refetch();
@@ -604,9 +618,9 @@ const SpecificEmployeeSalaryCalculator = () => {
   const totalHoursInMonth = earnings.totalHoursPerDay * totalDaysInMonth;
   const rate = earnings.rate || 0;
   const oneHourRate = rate / totalHoursInMonth;
-  const breakDown = totalHoursInMonth - (totals.totalHoursWorked || 0);
+  const breakDown = totalHoursInMonth - (totalHoursWorked || 0);
   const totalOvertimes = totalOvertime * oneHourRate || 0;
-
+  console.log("totals.totalHoursWorked ", totalHoursWorked);
   const debitNames = payHeadDetails
     .flatMap((item) => (Array.isArray(item.details) ? item.details : []))
     .filter(
@@ -891,10 +905,10 @@ const SpecificEmployeeSalaryCalculator = () => {
                         <span className="font-bold">Name:</span>{" "}
                         {employees.name}
                       </p>
-                      <p>
+                      {/* <p>
                         <span className="font-bold">Department:</span>{" "}
                         {employees.department}
-                      </p>
+                      </p> */}
                       <p>
                         <span className="font-bold">Date Of Joining:</span>{" "}
                         {formatDate(employees.dateOfHire)}
@@ -931,9 +945,9 @@ const SpecificEmployeeSalaryCalculator = () => {
                         </span>{" "}
                         -
                       </p>
-                      <p>
+                      {/* <p>
                         <span className="font-bold">Casual Leave:</span> -
-                      </p>
+                      </p> */}
                     </div>
                   </div>
                 )}
@@ -958,10 +972,10 @@ const SpecificEmployeeSalaryCalculator = () => {
                             <span>1 hour rent:</span>
                             <span>{oneHourRate.toFixed(2)}</span>
                           </div>
-                          <div className="flex justify-between w-full">
+                          {/* <div className="flex justify-between w-full">
                             <span>Total Present Days:</span>
                             <span>{totals.totalPresentDays}</span>
-                          </div>
+                          </div> */}
 
                           {/* <div className="flex justify-between w-full">
                             <span>Overtime rate :</span>
@@ -978,9 +992,7 @@ const SpecificEmployeeSalaryCalculator = () => {
                           </div> */}
                           <div className="flex justify-between w-full">
                             <span>Total Hours Worked:</span>
-                            <span>
-                              {(totals.totalHoursWorked || 0).toFixed(2)}
-                            </span>
+                            <span>{(totalHoursWorked || 0).toFixed(2)}</span>
                           </div>
                           <div className="flex justify-between w-full">
                             <span>Total Hours Per Day:</span>

@@ -1,23 +1,43 @@
 import { useState, useEffect, useRef } from "react";
-import { useCreateEmployeeMutation } from "../store/api/StaffApi";
+
 import { useGetTaxesQuery } from "../store/api/TaxApi";
 import { HiChevronDown, HiChevronUp } from "react-icons/hi";
 import { useGetGroupsQuery } from "../store/api/Group";
-import UnderPayHead1 from "../Staffmanagement/UderPayHead1";
-import { useCreateLedgerMutation } from "../store/api/LedgerPayHead";
-import { useLocation, useNavigate } from "react-router-dom";
+import UnderPayHead1 from "../employeepreview/UnderPayHead2";
+// import { useUpdateLedgerMutation } from "../store/api/LedgerPayHead";
+
+import { useUpdateLedgerMutation } from "../store/api/LedgerApi";
+import { useNavigate, useParams } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
-const CreateEmployeeForm = () => {
-  const location = useLocation();
-  const dropdownRef = useRef(null);
+import {
+  useUpdateEmployeeByIdMutation,
+  useGetEmployeeDetailsByIdQuery,
+} from "../store/api/StaffApi";
+const OwnerAllEdir = () => {
   const navigate = useNavigate();
-  const [createEmployee] = useCreateEmployeeMutation();
-  const [createLedger] = useCreateLedgerMutation();
+  const { employeeId } = useParams();
+  console.log("employeeId", employeeId);
+  const dropdownRef = useRef(null);
 
+  const [updateEmployeeById] = useUpdateEmployeeByIdMutation();
+  const [updateLedger] = useUpdateLedgerMutation();
+  const {
+    data: specificEmployee,
+    isLoading: voucherLoading,
+    isError: voucherError,
+    refetch: refetchVoucherData,
+  } = useGetEmployeeDetailsByIdQuery(employeeId || "", {
+    skip: !employeeId,
+  });
+
+  useEffect(() => {
+    refetchVoucherData();
+  }, [refetchVoucherData]);
+
+  console.log("paymentVoucher", specificEmployee);
   const [formData, setFormData] = useState({
-    registrationType: "vehicle",
+    registrationType: "employee",
     name: "",
     stockName: "",
     designation: "",
@@ -32,21 +52,20 @@ const CreateEmployeeForm = () => {
     bankName: "",
     accountNumber: "",
     ifscCode: "",
-    branchName: "",
     incomeTaxPAN: "",
     aadhaarCard: "",
     pfAccountNumber: "",
-    prAccountNumber: "",
+    branchName: "",
     under: "",
-    underEmployee: "",
-    vehicleType: "",
-    vehicleRegistration: "",
+
     esiNumber: "",
     dateOfHire: "", // Date of Hire field
     underForLedger: "",
     group: "",
     category: "",
     nature: "",
+    selectedOption: "",
+    ledgerId: "",
   });
   console.log("hai", formData);
   const [avatar, setAvatar] = useState("");
@@ -72,10 +91,11 @@ const CreateEmployeeForm = () => {
   };
   const handleDropdownChange = (selectedOption) => {
     console.log("selectedOption", selectedOption);
+
     setFormData((prevState) => ({
       ...prevState,
       under: selectedOption._id, //
-      underEmployee: selectedOption.name,
+      selectedOption: selectedOption.name,
     }));
   };
 
@@ -90,6 +110,67 @@ const CreateEmployeeForm = () => {
   const filteredGroups = groups.filter((group) =>
     group.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
+  console.log("specificEmployee", specificEmployee);
+  useEffect(() => {
+    if (specificEmployee) {
+      setFormData((prevState) => ({
+        ...prevState,
+        registrationType:
+          specificEmployee.registrationType || prevState.registrationType,
+        name: specificEmployee.underEmployee || prevState.name,
+        ledgerId: specificEmployee.ledgerId?._id || "",
+        stockName: specificEmployee.ledgerId?.name || prevState.stockName,
+        userName: specificEmployee.userName || specificEmployee.name,
+        designation: specificEmployee.designation || prevState.designation,
+        address: specificEmployee.address || prevState.address,
+        gender: specificEmployee.gender || prevState.gender,
+        dateOfBirth:
+          formatDate(specificEmployee.dateOfBirth) || prevState.dateOfBirth, // Format Date of Birth
+        bloodGroup: specificEmployee.bloodGroup || prevState.bloodGroup,
+        fatherOrMotherName:
+          specificEmployee.familyDetails?.fatherOrMotherName ||
+          prevState.fatherOrMotherName, // Accessing nested familyDetails
+        spouseName:
+          specificEmployee.familyDetails?.spouseName || prevState.spouseName, // Accessing nested familyDetails
+        contactPhone: specificEmployee.contact?.phone || prevState.contactPhone, // Accessing nested contact
+        contactEmail: specificEmployee.contact?.email || prevState.contactEmail, // Accessing nested contact
+        bankName: specificEmployee.bankDetails?.bankName || prevState.bankName, // Accessing nested bankDetails
+        accountNumber:
+          specificEmployee.bankDetails?.accountNumber ||
+          prevState.accountNumber, // Accessing nested bankDetails
+        ifscCode: specificEmployee.bankDetails?.ifscCode || prevState.ifscCode, // Accessing nested bankDetails
+        incomeTaxPAN: specificEmployee.incomeTaxPAN || prevState.incomeTaxPAN,
+        aadhaarCard: specificEmployee.aadhaarCard || prevState.aadhaarCard,
+        pfAccountNumber:
+          specificEmployee.pfAccountNumber || prevState.pfAccountNumber,
+        branchName:
+          specificEmployee.bankDetails?.branchName || prevState.branchName,
+        under: specificEmployee.under?._id || prevState.under,
+        avatar: specificEmployee.under?.avatar || "",
+        esiNumber: specificEmployee.esiNumber || prevState.esiNumber,
+        dateOfHire:
+          formatDate(specificEmployee.dateOfHire) || prevState.dateOfHire, // Format Date of Hire
+
+        // Accessing data from the first ledger item in the getLedger array
+        underForLedger:
+          specificEmployee.ledgerId?.under || prevState.underForLedger,
+        group: specificEmployee.ledgerId?.group || prevState.group, // Accessing ledger.group as a string
+        category: specificEmployee.ledgerId?.category || prevState.category,
+        nature: specificEmployee.ledgerId?.nature || prevState.nature,
+      }));
+
+      // Set avatar preview if available
+      if (specificEmployee.under.avatar) {
+        setAvatarPreview(specificEmployee.under.avatar);
+      }
+    }
+  }, [specificEmployee]); // Added getLedger to the dependency array
+
+  // Utility function to format dates in "YYYY-MM-DD" format
+  const formatDate = (date) => {
+    if (!date) return ""; // Return empty string if no date
+    return new Date(date).toISOString().split("T")[0]; // Format date to YYYY-MM-DD
+  };
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -121,57 +202,64 @@ const CreateEmployeeForm = () => {
       gender: e.target.value, // Update gender selection
     }));
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Ensure 'under' is selected before proceeding
     if (!formData.under) {
       toast.error("Please select a valid group before saving the ledger.");
-      return; // Exit early if validation fails
+      return;
     }
 
-    // Prepare ledger data from formData
-    const ledgerData = {
-      payHeadType: "Staff",
-      name: formData.stockName?.trim(), // Ensure the name is trimmed and non-empty
-      under: formData.underForLedger,
-      group: formData.group,
-      nature: formData.nature,
-      category: formData.category,
-    };
-
     try {
-      // Create the ledger
-      const ledgerResponse = await createLedger(ledgerData).unwrap();
-      console.log("Ledger created successfully", ledgerResponse);
+      // Step 1: Update Ledger
+      const ledgerData = {
+        payHeadType: "Staff",
+        name: formData.stockName,
+        under: formData.underForLedger,
+        group: formData.group,
+        nature: formData.nature,
+        category: formData.category,
+      };
 
-      // Extract the ledger ID from the response
-      const ledgerId = ledgerResponse._id;
+      // Update the ledger
+      const ledgerResponse = await updateLedger({
+        id: formData.ledgerId,
+        updatedPurchase: ledgerData,
+      }).unwrap();
 
-      // Prepare employee data, using FormData for file handling
-      const formDataToSubmit = new FormData();
-      Object.keys(formData).forEach((key) => {
-        formDataToSubmit.append(key, formData[key]);
-      });
+      if (ledgerResponse.payHeadType === "Staff") {
+        const formDataToSubmit = new FormData();
 
-      // Append ledger ID to the employee data
-      formDataToSubmit.append("ledger", ledgerId);
+        // Add all fields from formData to formDataToSubmit
+        Object.keys(formData).forEach((key) => {
+          formDataToSubmit.append(key, formData[key]);
+        });
 
-      // Optionally append an avatar if available
-      if (avatar) {
-        formDataToSubmit.append("avatar", avatar);
+        // Add avatar if available
+        if (avatar) {
+          formDataToSubmit.append("avatar", avatar);
+        }
+
+        // Step 2: Update Employee record
+        const employeeResponse = await updateEmployeeById({
+          id: employeeId,
+          data: formDataToSubmit,
+        }).unwrap();
+
+        if (employeeResponse.message === "Employee Updated Successfully") {
+          // Proceed to next page without needing new data
+          navigate("/staff/payHeadDetails"); // Navigate to the desired page
+          resetFormData(); // Reset the form data
+          toast.success("Employee updated successfully!"); // Show success toast
+        }
       }
-
-      // Create the employee
-      const employeeResponse = await createEmployee(formDataToSubmit).unwrap();
-      console.log("Employee created successfully", employeeResponse);
-
-      // Success toast and post-operation cleanup
-      toast.success("Employee and Ledger saved successfully!");
-      resetFormData();
-      navigate("/staff/payHeadDetails");
     } catch (error) {
-      console.error("Failed to save ledger or employee: ", error);
-      toast.error(error?.data?.message || "An unexpected error occurred.");
+      console.error("Failed to update ledger or employee:", error);
+      const errorMessage =
+        error?.data?.message || "Failed to update ledger or employee.";
+      toast.error(errorMessage); // Show error toast
     }
   };
 
@@ -179,6 +267,7 @@ const CreateEmployeeForm = () => {
     setFormData({
       registrationType: "employee",
       name: "",
+      userName: "",
       stockName: "",
       designation: "",
       address: "",
@@ -190,19 +279,17 @@ const CreateEmployeeForm = () => {
       fatherOrMotherName: "",
       spouseName: "",
       contactPhone: "",
-      vehicleType: "",
-      vehicleRegistration: "",
+
       contactEmail: "",
       bankName: "",
       accountNumber: "",
-      ifscCode: "",
       branchName: "",
+      ifscCode: "",
       incomeTaxPAN: "",
       aadhaarCard: "",
       pfAccountNumber: "",
-      prAccountNumber: "",
+
       under: "",
-      underEmployee: "",
       esiNumber: "",
       dateOfHire: "", // Reset Date of Hire field
       group: "",
@@ -252,9 +339,10 @@ const CreateEmployeeForm = () => {
               Who is
             </label>
             <UnderPayHead1
-              selectedOption={formData.under}
-              hello={handleDropdownChange}
-              options={ledgers || []}
+              selectedOption={formData.under || "hai"} // Pass selected option here
+              hello={handleDropdownChange} // Handles dropdown selection
+              options={ledgers || []} // Options to display in dropdown
+              manu={formData.name}
             />
           </div>
           <div className="lg:col-span-1">
@@ -283,8 +371,9 @@ const CreateEmployeeForm = () => {
                 onClick={() => setIsOpen(!isOpen)}
               >
                 <span className="truncate text-gray-700 dark:text-gray-300">
-                  {selectedGroup ? selectedGroup.name : ""}
+                  {selectedGroup ? selectedGroup.name : formData.group}
                 </span>
+
                 {isOpen ? (
                   <HiChevronUp className="text-gray-500 dark:text-gray-400" />
                 ) : (
@@ -329,38 +418,12 @@ const CreateEmployeeForm = () => {
           {/* Additional fields for employee registration can be added here */}
           <div className="lg:col-span-1">
             <label className="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">
-              Owner Name
+              Name
             </label>
             <input
               type="text"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm dark:bg-gray-800 dark:border-gray-700"
-              placeholder=""
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">
-              Vehicle Type
-            </label>
-            <input
-              type="text"
-              name="vehicleType"
-              value={formData.vehicleType}
-              onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm dark:bg-gray-800 dark:border-gray-700"
-              placeholder=""
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">
-              Vehicle Registration Number
-            </label>
-            <input
-              type="text"
-              name="vehicleRegistration"
-              value={formData.vehicleRegistration}
+              name="userName"
+              value={formData.userName}
               onChange={handleChange}
               className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm dark:bg-gray-800 dark:border-gray-700"
               placeholder=""
@@ -431,7 +494,32 @@ const CreateEmployeeForm = () => {
               placeholder=""
             />
           </div>
-
+          <div className="mb-4">
+            <label className="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">
+              Father/Mother Name
+            </label>
+            <input
+              type="text"
+              name="fatherOrMotherName"
+              value={formData.fatherOrMotherName}
+              onChange={handleChange}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm dark:bg-gray-800 dark:border-gray-700"
+              placeholder=""
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">
+              Spouse Name
+            </label>
+            <input
+              type="text"
+              name="spouseName"
+              value={formData.spouseName}
+              onChange={handleChange}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm dark:bg-gray-800 dark:border-gray-700"
+              placeholder=""
+            />
+          </div>
           <div className="mb-4">
             <label className="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">
               Esi
@@ -493,7 +581,7 @@ const CreateEmployeeForm = () => {
             <input
               type="text"
               name="contactEmail"
-              value={formData.Email}
+              value={formData.contactEmail}
               onChange={handleChange}
               className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm dark:bg-gray-800 dark:border-gray-700"
               placeholder=""
@@ -540,19 +628,6 @@ const CreateEmployeeForm = () => {
           </div>
           <div className="mb-4">
             <label className="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">
-              branchName
-            </label>
-            <input
-              type="text"
-              name="branchName"
-              value={formData.branchName}
-              onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm dark:bg-gray-800 dark:border-gray-700"
-              placeholder=""
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">
               Income Tax Number
             </label>
             <input
@@ -577,7 +652,19 @@ const CreateEmployeeForm = () => {
               placeholder=""
             />
           </div>
-
+          <div className="mb-4">
+            <label className="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">
+              branch name
+            </label>
+            <input
+              type="text"
+              name="branchName"
+              value={formData.branchName}
+              onChange={handleChange}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm dark:bg-gray-800 dark:border-gray-700"
+              placeholder=""
+            />
+          </div>
           <div className="flex items-center justify-between w-full ">
             <button
               type="submit"
@@ -596,4 +683,4 @@ const CreateEmployeeForm = () => {
   );
 };
 
-export default CreateEmployeeForm;
+export default OwnerAllEdir;

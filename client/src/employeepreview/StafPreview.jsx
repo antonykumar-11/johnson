@@ -6,10 +6,7 @@ import { useGetGroupsQuery } from "../store/api/Group";
 import UnderPayHead1 from "../employeepreview/UnderPayHead2";
 // import { useUpdateLedgerMutation } from "../store/api/LedgerPayHead";
 
-import {
-  useGetLedgerQuery,
-  useUpdateLedgerMutation,
-} from "../store/api/LedgerApi";
+import { useUpdateLedgerMutation } from "../store/api/LedgerApi";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -33,13 +30,11 @@ const UpdateEmployeeForm = () => {
   } = useGetEmployeeDetailsByIdQuery(employeeId || "", {
     skip: !employeeId,
   });
-  const { data: getLedger } = useGetLedgerQuery(employeeId || "", {
-    skip: !employeeId,
-  });
+
   useEffect(() => {
     refetchVoucherData();
   }, [refetchVoucherData]);
-  console.log("getLedger", getLedger);
+
   console.log("paymentVoucher", specificEmployee);
   const [formData, setFormData] = useState({
     registrationType: "employee",
@@ -60,7 +55,7 @@ const UpdateEmployeeForm = () => {
     incomeTaxPAN: "",
     aadhaarCard: "",
     pfAccountNumber: "",
-    prAccountNumber: "",
+    branchName: "",
     under: "",
 
     esiNumber: "",
@@ -117,16 +112,14 @@ const UpdateEmployeeForm = () => {
   );
   console.log("specificEmployee", specificEmployee);
   useEffect(() => {
-    if (specificEmployee && getLedger && getLedger.length > 0) {
-      const ledger = getLedger[0]; // Accessing the first item in the getLedger array
-
+    if (specificEmployee) {
       setFormData((prevState) => ({
         ...prevState,
         registrationType:
           specificEmployee.registrationType || prevState.registrationType,
-        name: specificEmployee.underEmployee || prevState.name,
-        ledgerId: ledger._id || "",
-        stockName: ledger.name || prevState.stockName,
+        name: specificEmployee.name || prevState.name,
+        ledgerId: specificEmployee.ledgerId._id || "",
+        stockName: specificEmployee.ledgerId.name || prevState.stockName,
         userName: specificEmployee.userName || specificEmployee.name,
         designation: specificEmployee.designation || prevState.designation,
         address: specificEmployee.address || prevState.address,
@@ -150,8 +143,8 @@ const UpdateEmployeeForm = () => {
         aadhaarCard: specificEmployee.aadhaarCard || prevState.aadhaarCard,
         pfAccountNumber:
           specificEmployee.pfAccountNumber || prevState.pfAccountNumber,
-        prAccountNumber:
-          specificEmployee.prAccountNumber || prevState.prAccountNumber,
+        branchName:
+          specificEmployee.bankDetails?.branchName || prevState.branchName,
         under: specificEmployee.under?._id || prevState.under,
         avatar: specificEmployee.under?.avatar || "",
         esiNumber: specificEmployee.esiNumber || prevState.esiNumber,
@@ -159,10 +152,11 @@ const UpdateEmployeeForm = () => {
           formatDate(specificEmployee.dateOfHire) || prevState.dateOfHire, // Format Date of Hire
 
         // Accessing data from the first ledger item in the getLedger array
-        underForLedger: ledger.under || prevState.underForLedger,
-        group: ledger.group || prevState.group, // Accessing ledger.group as a string
-        category: ledger.category || prevState.category,
-        nature: ledger.nature || prevState.nature,
+        underForLedger:
+          specificEmployee.ledgerId.under || prevState.underForLedger,
+        group: specificEmployee.ledgerId.group || prevState.group, // Accessing ledger.group as a string
+        category: specificEmployee.ledgerId.category || prevState.category,
+        nature: specificEmployee.ledgerId.nature || prevState.nature,
       }));
 
       // Set avatar preview if available
@@ -170,7 +164,7 @@ const UpdateEmployeeForm = () => {
         setAvatarPreview(specificEmployee.under.avatar);
       }
     }
-  }, [specificEmployee, getLedger]); // Added getLedger to the dependency array
+  }, [specificEmployee]); // Added getLedger to the dependency array
 
   // Utility function to format dates in "YYYY-MM-DD" format
   const formatDate = (date) => {
@@ -289,11 +283,12 @@ const UpdateEmployeeForm = () => {
       contactEmail: "",
       bankName: "",
       accountNumber: "",
+      branchName: "",
       ifscCode: "",
       incomeTaxPAN: "",
       aadhaarCard: "",
       pfAccountNumber: "",
-      prAccountNumber: "",
+
       under: "",
       esiNumber: "",
       dateOfHire: "", // Reset Date of Hire field
@@ -659,12 +654,12 @@ const UpdateEmployeeForm = () => {
           </div>
           <div className="mb-4">
             <label className="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">
-              PR Account Number
+              branch name
             </label>
             <input
               type="text"
-              name="prAccountNumber"
-              value={formData.prAccountNumber}
+              name="branchName"
+              value={formData.branchName}
               onChange={handleChange}
               className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm dark:bg-gray-800 dark:border-gray-700"
               placeholder=""

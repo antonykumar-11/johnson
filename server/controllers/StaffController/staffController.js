@@ -1,5 +1,6 @@
 const Staff = require("../../models/staffmodel/employees");
 const mongoose = require("mongoose");
+const Ledger = require("../../models/ledgerSchema");
 // Utility function to parse dot notation to nested object
 function parseDotNotationToNestedObject(dotNotationObj) {
   const result = {};
@@ -17,28 +18,21 @@ function parseDotNotationToNestedObject(dotNotationObj) {
   return result;
 }
 
-// Create a new employee
 exports.createEmployee = async (req, res) => {
-  console.log("Incoming Request Body:", req.body);
-
+  console.log("nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn", req.body);
   let avatar;
   const BASE_URL =
     process.env.NODE_ENV === "production"
       ? `${req.protocol}://${req.get("host")}`
       : process.env.BACKEND_URL;
 
-  if (req.file) {
-    avatar = `${BASE_URL}/uploads/user/${req.file.originalname}`;
-  }
+  if (req.file) avatar = `${BASE_URL}/uploads/user/${req.file.originalname}`;
 
   try {
-    // Convert dot notation to nested object
     const body = parseDotNotationToNestedObject(req.body);
-
-    // Prepare employee registration object
     const employeeRegistration = {
       registrationType: body.registrationType,
-      name: body.name, // Ensure you're correctly accessing the name
+      name: body.name,
       designation: body.designation,
       address: body.address,
       gender: body.gender,
@@ -56,23 +50,20 @@ exports.createEmployee = async (req, res) => {
         bankName: body.bankName,
         accountNumber: body.accountNumber,
         ifscCode: body.ifscCode,
+        branchName: body.branchName,
       },
       incomeTaxPAN: body.incomeTaxPAN,
       underEmployee: body.underEmployee,
       aadhaarCard: body.aadhaarCard,
       pfAccountNumber: body.pfAccountNumber,
       prAccountNumber: body.prAccountNumber,
-
       under: body.under,
       esiNumber: body.esiNumber,
       dateOfHire: body.dateOfHire ? new Date(body.dateOfHire) : null,
-      avatar: body.avatar, // Ensure you're handling the binary data correctly
+      avatar,
       owner: req.user.id,
+      ledgerId: body.ledger,
     };
-
-    if (avatar) {
-      employeeRegistration.avatar = avatar;
-    }
 
     const employee = new Staff(employeeRegistration);
     await employee.save();
@@ -89,7 +80,6 @@ exports.createEmployee = async (req, res) => {
         .status(400)
         .json({ message: "Employee name must be unique per user." });
     }
-    console.log("Error:", err);
     res.status(500).json({
       message: "check name or gender",
       success: false,
@@ -116,6 +106,7 @@ exports.updateEmployeeById = async (req, res) => {
     const { id } = req.params; // Get the employee ID from the request
     const body = req.body; // Get the entire request body
     console.log("body", body);
+
     // Prepare employee registration object
     const employeeRegistration = {
       registrationType: body.registrationType,
@@ -134,11 +125,10 @@ exports.updateEmployeeById = async (req, res) => {
         email: body.contactEmail,
       },
       bankDetails: {
-        phone: body.contactPhone,
-        email: body.contactEmail,
         bankName: body.bankName,
         accountNumber: body.accountNumber,
         ifscCode: body.ifscCode,
+        branchName: body.branchName,
       },
       incomeTaxPAN: body.incomeTaxPAN,
       underEmployee: body.underEmployee,
@@ -151,6 +141,7 @@ exports.updateEmployeeById = async (req, res) => {
       dateOfHire: body?.dateOfHire ? new Date(body.dateOfHire) : null,
       avatar: avatar || body.avatar, // Avatar field should be handled as well
       owner: req.user.id, // Ensure it's the current user updating the employee
+      ledgerId: body.ledgerId, // Include ledgerId in the update
     };
 
     // Perform the update operation
@@ -203,13 +194,19 @@ exports.getEmployeeById = async (req, res) => {
     const employee = await Staff.findOne({
       _id: req.params.id,
       owner: req.user.id,
-    }).populate("under"); // Populate the 'under' field with the referenced Employeegroup
-
+    })
+      .populate("under") // Populate the 'under' field with the referenced Employeegroup
+      .populate("ledgerId"); // Populate the 'ledgerId' field with the referenced Ledger model
+    console.log(
+      "....................................................................",
+      employee
+    );
     if (!employee) {
       return res.status(404).json({ message: "Employee Not Found" });
     }
+
     res.status(200).json(employee);
-    console.log("Employee details", employee); // Check the populated data
+    console.log("Employee details with ledger:", employee); // Check the populated data
   } catch (error) {
     res.status(500).json({ message: "Internal Server Error", error });
   }
@@ -218,19 +215,44 @@ exports.getEmployeeById = async (req, res) => {
 // Delete an employee by ID
 exports.deleteEmployeeById = async (req, res) => {
   try {
-    const employee = await Staff.findOneAndDelete({
+    // Find the employee and populate the ledgerId for additional operations
+    const employee = await Staff.findOne({
       _id: req.params.id,
       owner: req.user.id,
-    }); // Filter by owner
+    });
+
     if (!employee) {
       return res.status(404).json({ message: "Employee Not Found" });
     }
-    res
-      .status(200)
-      .json({ message: "Employee Deleted Successfully", success: true });
+
+    // If the employee has an associated ledgerId, handle it (e.g., delete or unlink the ledger)
+    if (employee.ledgerId) {
+      try {
+        await Ledger.findByIdAndDelete(employee.ledgerId._id); // Remove the ledger document
+        console.log(`Ledger with ID ${employee.ledgerId._id} deleted.`);
+      } catch (ledgerError) {
+        console.error("Error deleting ledger:", ledgerError);
+        return res.status(500).json({
+          message: "Failed to delete associated ledger",
+          success: false,
+          error: ledgerError.message,
+        });
+      }
+    }
+
+    // Delete the employee record
+    await Staff.findByIdAndDelete(req.params.id);
+
+    res.status(200).json({
+      message: "Employee and associated ledger deleted successfully",
+      success: true,
+    });
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Internal Server Error", success: false, error });
+    console.error("Error deleting employee:", error);
+    res.status(500).json({
+      message: "Internal Server Error",
+      success: false,
+      error: error.message || error, // Log the error message
+    });
   }
 };

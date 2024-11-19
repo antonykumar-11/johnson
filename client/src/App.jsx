@@ -154,6 +154,9 @@ import PayMasterViewEdit from "./AllLedgerViewAdnEdit/PayMasterViewEdit";
 import VehicleRentEdit from "./Staffmanagement/VehicleRentEdit";
 import useTheme from "./context/Theme";
 import IndirectDreditNote from "./CreditNotee/IndirectDreditNote";
+import OwnerDashBoard from "./Staffmanagement/OwnerDashBoard";
+import OwnerEdit from "./Staffmanagement/OwnerEdit";
+import OwnerAllEdir from "./employeepreview/OwnerAllEdir";
 function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const { themeMode } = useTheme();
@@ -532,6 +535,12 @@ function App() {
                       path="dashboard/:groupId"
                       element={<StaffDashBord />}
                     />
+                    <Route path="owner/:groupId" element={<OwnerDashBoard />} />
+                    <Route
+                      path="owneredit/:employeeId"
+                      element={<OwnerEdit />}
+                    />
+
                     <Route
                       path="indirectexpencedetails/:group"
                       element={<IndirectExpensesDetails />}
@@ -543,6 +552,11 @@ function App() {
                       path="staff/all/:employeeId"
                       element={<StafPreviw />}
                     />
+                    <Route
+                      path="staff/ownerAllEdir/:employeeId"
+                      element={<OwnerAllEdir />}
+                    />
+
                     <Route
                       path="paymasterreports/:transactionId"
                       element={<PayMasterViewEdit />}

@@ -49,7 +49,7 @@ const Invoice = ({ data }) => {
       // Optionally handle the error, e.g., show a message to the user
     }
   };
-
+  console.log("data", data);
   return (
     <div className="p-6">
       <div
@@ -62,59 +62,62 @@ const Invoice = ({ data }) => {
               {/* Invoice Header */}
               <div className="relative mb-8 flex items-center justify-center">
                 <div className="text-center">
-                  <h1 className="text-4xl font-bold text-gray-800 uppercase">
+                  <h1 className="text-2xl font-bold text-gray-800 uppercase">
                     {invoice.companyName || "Company Name"}
                   </h1>
-                  <p className="text-lg text-gray-600">
-                    {invoice.companyTagline || "Company Tagline"}
-                  </p>
                 </div>
                 <img
-                  src={invoice.logo || Image}
+                  src={invoice.avatar || Image}
                   alt="Company Logo"
-                  className="absolute right-0 top-1/2 transform -translate-y-1/2 w-32 h-32 rounded-full object-contain"
+                  className="absolute right-12 top-6 transform -translate-y-1/2 w-28 h-28  rounded-full object-contain p-4"
                   style={{ marginRight: "-4rem" }}
                 />
               </div>
 
               {/* Company and Invoice Details */}
-              <div className="text-right mb-10">
+              <div className="text-left mb-4">
                 <>
-                  <p className="text-base text-gray-600">{invoice.address1}</p>
-                  <p className="text-base text-gray-600">{invoice.address2}</p>
-                  <p className="text-base text-gray-600">{invoice.address3}</p>
-                  <p className="text-base text-gray-600">{invoice.address4}</p>
-                  <p className="text-base text-gray-600">
+                  <p className="text-sm text-gray-600">{invoice.address1}</p>
+                  <p className="text-sm text-gray-600">{invoice.address2}</p>
+                  <p className="text-sm text-gray-600">{invoice.address3}</p>
+                  <p className="text-sm text-gray-600">{invoice.address4}</p>
+                  <p className="text-sm text-gray-600">
                     Email : {invoice.email}
                   </p>
-                  <p className="text-base text-gray-600">
+                  <p className="text-sm text-gray-600">
                     GST No : {invoice.gstNumber}
                   </p>
-                  <p className="text-base text-gray-600">
-                    GST No : {invoice.mobileNumber}
+                  <p className="text-sm text-gray-600">
+                    Mobile No : {invoice.mobileNumber}
                   </p>
                 </>
               </div>
 
-              <h2 className="text-center mb-8 text-2xl font-semibold">
+              <h2 className="text-center  text-xl font-semibold">
                 Tax Invoice
               </h2>
 
               <div className="flex justify-between mb-10">
                 <div>
-                  <p className="text-base text-gray-600">
-                    PAN NO: {invoice.panNo || "N/A"}
+                  <p className="text-sm text-gray-600">
+                    PAN NO: {invoice.pancardnumber || "N/A"}
                   </p>
-                  <p className="text-base text-gray-600">
-                    GST NO: {invoice.gstNo || "N/A"}
+                  <p className="text-sm text-gray-600">
+                    GST NO: {invoice.gstNumber || "N/A"}
                   </p>
                 </div>
                 <div>
-                  <p className="text-base text-gray-600">
-                    INVOICE NO: {invoice.invoiceNo || "N/A"}
+                  <p className="text-sm text-gray-600">
+                    INVOICE NO: {data.saleInvoiceNumber || "N/A"}
                   </p>
-                  <p className="text-base text-gray-600">
-                    DATE: {invoice.date || "N/A"}
+                  <p className="text-sm text-gray-600">
+                    DATE:{" "}
+                    {data.transactionDate
+                      ? new Date(data.transactionDate).toLocaleDateString(
+                          "en-US",
+                          { year: "numeric", month: "long", day: "numeric" }
+                        )
+                      : "N/A"}
                   </p>
                 </div>
               </div>
@@ -131,7 +134,7 @@ const Invoice = ({ data }) => {
               <h2 className="text-lg font-semibold text-gray-600">
                 Billed To:
               </h2>
-              <div className="text-base text-gray-600">
+              <div className="text-sm text-gray-600">
                 <p>{data.purchasedBy.companyName}</p>
                 <p>{data.purchasedBy.street}</p>
                 <p>{data.purchasedBy.MainArea}</p>
@@ -148,7 +151,7 @@ const Invoice = ({ data }) => {
               <h2 className="text-lg font-semibold text-gray-600">
                 Shipped To:
               </h2>
-              <div className="text-base text-gray-600">
+              <div className="text-sm text-gray-600">
                 <p>{data.purchasedTo.companyName}</p>
                 <p>{data.purchasedTo.street}</p>
                 <p>{data.purchasedTo.MainArea}</p>
@@ -217,23 +220,23 @@ const Invoice = ({ data }) => {
         </div>
 
         {/* Total and Amount in Words */}
-        <div className="flex justify-end mb-10">
+        <div className="flex justify-end mb-2">
           <div className="text-right">
-            <p className="text-base text-gray-600 mb-1">
+            <p className="text-sm text-gray-600 mb-1">
               Subtotal: ₹{totalSubtotal.toFixed(2)}
             </p>
-            <p className="text-base text-gray-600 mb-1">
+            <p className="text-sm text-gray-600 mb-1">
               Add CGST {taxRate / 2}: ₹{totalCGST.toFixed(2)}
             </p>
-            <p className="text-base text-gray-600 mb-1">
+            <p className="text-sm text-gray-600 mb-1">
               Add SGST {taxRate / 2}: ₹{totalSGST.toFixed(2)}
             </p>
-            <p className="text-2xl font-bold text-gray-800 mt-2">
+            <p className="text-xl font-bold text-gray-800 mt-2">
               Total: ₹{overallTotal.toFixed(2)}
             </p>
           </div>
         </div>
-        <div className="mb-10">
+        <div className="">
           <p className="text-base text-gray-600">
             Amount in Words: {convertNumberToWords(overallTotal)}
           </p>
@@ -246,26 +249,26 @@ const Invoice = ({ data }) => {
               <h2 className="text-lg font-semibold text-gray-600 mb-2">
                 Bank Details:
               </h2>
-              <p className="text-base text-gray-600">
+              <p className="text-sm text-gray-600">
                 Account name: {invoice.bankName || "N/A"}
               </p>
-              <p className="text-base text-gray-600">
+              <p className="text-sm text-gray-600">
                 Account Number: {invoice.accountNumber || "N/A"}
               </p>
-              <p className="text-base text-gray-600">
+              <p className="text-sm text-gray-600">
                 IFSC Code: {invoice.ifsc || "N/A"}
               </p>
-              <p className="text-base text-gray-600">
+              <p className="text-sm text-gray-600">
                 Branch: {invoice.branch || "N/A"}
               </p>
 
               <div className="mt-4">
-                <p className="text-base text-gray-600 text-[16px]">
+                <p className="text-sm text-gray-600 text-[16px]">
                   {invoice.description || "No description provided."}
                 </p>
               </div>
-
-              <div className="mt-10 text-right">
+              {/* 
+              <div className="mt-2 text-right">
                 <p className="text-lg font-semibold text-gray-600">
                   For {invoice.companyName || "Company Name"}
                 </p>
@@ -273,7 +276,7 @@ const Invoice = ({ data }) => {
                   {invoice.director || "Director"}
                 </p>
                 <p className="text-base text-gray-600">Managing Director</p>
-              </div>
+              </div> */}
             </div>
           ))
         ) : (

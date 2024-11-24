@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Menu as MenuIcon } from "lucide-react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
@@ -10,8 +10,9 @@ import CalculatorModal from "../admin/CalCulatorModal";
 const Header = ({ toggleSidebar }) => {
   const { themeMode, darkTheme, lightTheme } = useTheme();
   const navigate = useNavigate();
-  const { isAuthenticated, user } = useAuth(); // Assuming you're using an AuthContext
+  const { isAuthenticated, user, updateUserAvatar } = useAuth(); // Assuming you have a function to update user info
   const [isModalOpen, setModalOpen] = useState(false);
+
   // Handle theme toggle
   const handleToggle = () => {
     if (themeMode === "light") {
@@ -25,6 +26,17 @@ const Header = ({ toggleSidebar }) => {
   const handleProfileClick = () => {
     navigate(`/reports/profile/${user._id}`); // Include user ID in the URL
   };
+
+  // Handle profile picture update
+  const handleProfilePicUpdate = (newAvatarUrl) => {
+    // Assuming updateUserAvatar is a function that updates the user profile
+    updateUserAvatar(newAvatarUrl);
+  };
+
+  useEffect(() => {
+    // You can also use useEffect to re-fetch the user data if it's stored externally
+    // This would be triggered when the avatar is updated (if you use something like Context or Redux)
+  }, [user?.avatar]); // Run when the avatar changes
 
   return (
     <header

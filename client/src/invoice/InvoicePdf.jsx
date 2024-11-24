@@ -147,7 +147,7 @@ const styles = StyleSheet.create({
   tableCellDescriptionHeader: {
     flex: 2,
     padding: 8,
-    backgroundColor: "#E5E7EB",
+    backgroundColor: "red",
     borderRightWidth: 1,
     borderRightColor: "#D1D5DB",
     fontSize: 10,

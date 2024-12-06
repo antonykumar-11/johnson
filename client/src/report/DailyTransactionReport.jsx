@@ -206,15 +206,11 @@ const DailyTransactionReport = () => {
                     <th className="border border-gray-300 p-2 text-center">
                       Date
                     </th>
-                    <th className="border border-gray-300 p-2 text-center">
-                      Status
-                    </th>
+
                     <th className="border border-gray-300 p-2 text-center">
                       P/V
                     </th>
-                    <th className="border border-gray-300 p-2 text-center">
-                      V/N
-                    </th>
+
                     <th className="border border-gray-300 p-2 text-center">
                       Subtotal
                     </th>
@@ -227,12 +223,7 @@ const DailyTransactionReport = () => {
                     <th className="border border-gray-300 p-2 text-center">
                       items
                     </th>
-                    <th className="border border-gray-300 p-2 text-center">
-                      Credit Amount
-                    </th>
-                    <th className="border border-gray-300 p-2 text-center">
-                      Credit Due Date
-                    </th>
+
                     <th className="border border-gray-300 p-2 text-center">
                       (₹) Closing balance
                     </th>
@@ -252,19 +243,11 @@ const DailyTransactionReport = () => {
                           transaction.transactionDate
                         ).toLocaleDateString()}
                       </td>
-                      <td
-                        className={`p-2 text-center ${getStatusColor(
-                          transaction.status
-                        )}`}
-                      >
-                        {transaction.status}
-                      </td>
+
                       <td className="p-2 text-center">
                         {transaction.purposeOfPayment || "N/A"}
                       </td>
-                      <td className="p-2 text-center">
-                        {transaction.voucherNumber || "N/A"}
-                      </td>
+
                       <td className="p-2 text-center">
                         {transaction.subTotal
                           ? transaction.subTotal.toFixed(2)
@@ -288,18 +271,7 @@ const DailyTransactionReport = () => {
                           </div>
                         ))}
                       </td>
-                      <td className="p-2 text-center">
-                        {transaction.creditAmount
-                          ? transaction.creditAmount.toFixed(2)
-                          : "N/A"}
-                      </td>
-                      <td className="p-2 text-center">
-                        {transaction.creditDueDate
-                          ? new Date(
-                              transaction.creditDueDate
-                            ).toLocaleDateString()
-                          : "N/A"}
-                      </td>
+
                       <td className="p-2 text-center">
                         {dailySummary[
                           new Date(

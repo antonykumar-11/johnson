@@ -32,12 +32,12 @@ function InvoiceHeader() {
         >
           Pay Head Details
         </NavLink>
-        <NavLink
+        {/* <NavLink
           to="/staff/paymaster"
           className="px-1 py-1 no-underline rounded hover:text-white hover:bg-black dark:hover:bg-gradient-to-r from-green-400 to-blue-500"
         >
           paymaster
-        </NavLink>
+        </NavLink> */}
         <NavLink
           to="/staff/paymasterpriview"
           className="px-1 py-1 no-underline rounded hover:text-white hover:bg-black dark:hover:bg-gradient-to-r from-green-400 to-blue-500"

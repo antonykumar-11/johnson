@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import LedgerMiddleWares from "../middlewares/LedgerMiddleWares";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import { useParams, useLocation } from "react-router-dom";
 import useTheme from "../context/Theme";
 import {
   useCreatePaymasterVoucherMutation,
@@ -16,14 +16,21 @@ import {
 } from "../store/api/LedgerApi";
 import Ledger from "../vouchers/dummy2/Ledger5";
 const JournalVoucher = () => {
+  const { employeeId } = useParams(); // Get user ID from URL params
+  console.log("id", employeeId);
+  const location = useLocation();
+  const { EmployeeName } = location.state || { EmployeeName: "" }; // Default to empty string if not found
+
   const [voucherData, setVoucherData] = useState({
     voucherType: "PayMaster",
     voucherNumber: "",
+    EmployeeName: EmployeeName || "", // Set EmployeeName by default
     date: "",
-    debitLedgers: [{ ledgerId: "", ledgerName: "", amount: "" }],
-    creditLedgers: [{ ledgerId: "", ledgerName: "", amount: "" }],
+    debitLedgers: [{ ledgerId: "", ledgerName: "", amount: "", group: "" }],
+    creditLedgers: [{ ledgerId: "", ledgerName: "", amount: "", group: "" }],
     description: "",
   });
+  console.log("Employee Name:", EmployeeName);
   const [localLedgerData, setLocalLedgerData] = useState([]); // Local ledger state for dropdown
   const openLedgerModal = () => setIsLedgerModalOpen(true);
   const closeLedgerModal = () => setIsLedgerModalOpen(false);
@@ -32,10 +39,10 @@ const JournalVoucher = () => {
     isLoading,
     isError,
     refetch,
-  } = useGetLedgerPayQuery();
+  } = useGetLedgerPayQuery(EmployeeName);
+  console.log("ledger", ledgers);
   const { data: voucherCheck, refetch: VocherCheckRefecth } =
     useCheckVoucherNumberQuery();
-  console.log("voucherCheck ", voucherCheck);
 
   // Handle voucher number check
   useEffect(() => {
@@ -64,17 +71,27 @@ const JournalVoucher = () => {
   const { themeMode } = useTheme();
   const [isLedgerModalOpen, setIsLedgerModalOpen] = useState(false);
   const handleLedgerChange = (index, ledgerType, ledger) => {
-    const updatedLedgers = [...voucherData[ledgerType]];
+    console.log("ledgers ", ledgers);
+    const updatedLedgers = [...voucherData[ledgerType]]; // Clone the ledger array
     updatedLedgers[index] = {
-      ...updatedLedgers[index],
+      ...updatedLedgers[index], // Retain the other properties
       ledgerId: ledger._id,
       ledgerName: ledger.name,
+      group: ledger.group,
     };
+
     setVoucherData((prevData) => ({
       ...prevData,
-      [ledgerType]: updatedLedgers,
+      [ledgerType]: updatedLedgers, // Update the relevant ledger
     }));
   };
+  useEffect(() => {
+    // Update voucherData if EmployeeName changes (in case it's dynamic)
+    setVoucherData((prevData) => ({
+      ...prevData,
+      EmployeeName: EmployeeName || "", // Ensure EmployeeName is updated when passed
+    }));
+  }, [EmployeeName]); // Add EmployeeName as a dependency
 
   const handleAmountChange = (index, ledgerType, value) => {
     const updatedLedgers = [...voucherData[ledgerType]];
@@ -136,8 +153,12 @@ const JournalVoucher = () => {
           voucherType: "PayMaster",
           voucherNumber: "",
           date: "",
-          debitLedgers: [{ ledgerId: "", ledgerName: "", amount: "" }],
-          creditLedgers: [{ ledgerId: "", ledgerName: "", amount: "" }],
+          debitLedgers: [
+            { ledgerId: "", ledgerName: "", amount: "", group: "" },
+          ],
+          creditLedgers: [
+            { ledgerId: "", ledgerName: "", amount: "", group: "" },
+          ],
           description: "",
         });
       } else {
@@ -335,6 +356,7 @@ const JournalVoucher = () => {
             <Ledger
               closeModal={closeLedgerModal}
               onLedgerCreate={handleLedgerCreation}
+              EmployeeName={EmployeeName}
             />
           )}
 

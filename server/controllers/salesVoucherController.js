@@ -174,43 +174,63 @@ const getAllVoucherNumbers = async (req, res) => {
   }
 };
 
+// const createSales = async (req, res) => {
+//   try {
+//     // Create a new sale document
+//     const newSale = new Sales({
+//       ...req.body, // Spread the request body to create the sale document
+//       owner: req.user._id, // Set the owner to the logged-in user
+//     });
+
+//     // Save the sale first
+//     const savedSale = await newSale.save();
+
+//     // Handle inventory updates for each item in the sale
+//     for (const item of req.body.items) {
+//       const { stockName, quantity, hsnCode } = item; // Extract relevant fields
+
+//       // Update the inventory: decrement the quantityAvailable
+//       const inventoryItem = await Inventory.findOneAndUpdate(
+//         { stockName, hsnCode }, // Ensure you use both stockName and hsnCode for unique identification
+//         { $inc: { quantityAvailable: -quantity } }, // Decrement the quantity
+//         { new: true }
+//       );
+//       console.log("inventoryItem", inventoryItem);
+//       // Optional: Handle case where inventory item is not found
+//       if (!inventoryItem) {
+//         console.warn(
+//           `Inventory item not found for stockName: ${stockName} and hsnCode: ${hsnCode}`
+//         );
+//         // You may choose to handle this differently, like throwing an error or logging
+//       }
+//     }
+
+//     // Send the response back
+//     res.status(201).json(savedSale);
+//     console.log("Create Sale:", savedSale);
+//   } catch (error) {
+//     console.error("Error creating sale:", error);
+//     res.status(500).json({ message: error.message });
+//   }
+// };
 const createSales = async (req, res) => {
   try {
-    // Create a new sale document
+    // Destructure and clean the input
+    const { purchasedTo, purchasedBy, ...otherData } = req.body;
+
     const newSale = new Sales({
-      ...req.body, // Spread the request body to create the sale document
+      ...otherData, // Include other fields from the request body
+      purchasedTo: purchasedTo || null, // Set to null if empty or undefined
+      purchasedBy: purchasedBy || null, // Set to null if empty or undefined
       owner: req.user._id, // Set the owner to the logged-in user
     });
 
-    // Save the sale first
-    const savedSale = await newSale.save();
-
-    // Handle inventory updates for each item in the sale
-    for (const item of req.body.items) {
-      const { stockName, quantity, hsnCode } = item; // Extract relevant fields
-
-      // Update the inventory: decrement the quantityAvailable
-      const inventoryItem = await Inventory.findOneAndUpdate(
-        { stockName, hsnCode }, // Ensure you use both stockName and hsnCode for unique identification
-        { $inc: { quantityAvailable: -quantity } }, // Decrement the quantity
-        { new: true }
-      );
-      console.log("inventoryItem", inventoryItem);
-      // Optional: Handle case where inventory item is not found
-      if (!inventoryItem) {
-        console.warn(
-          `Inventory item not found for stockName: ${stockName} and hsnCode: ${hsnCode}`
-        );
-        // You may choose to handle this differently, like throwing an error or logging
-      }
-    }
-
-    // Send the response back
-    res.status(201).json(savedSale);
-    console.log("Create Sale:", savedSale);
+    await newSale.save();
+    res
+      .status(201)
+      .json({ message: "Sale created successfully", sale: newSale });
   } catch (error) {
-    console.error("Error creating sale:", error);
-    res.status(500).json({ message: error.message });
+    res.status(400).json({ message: error.message });
   }
 };
 
@@ -235,10 +255,6 @@ const updateSales = async (req, res) => {
       id,
       {
         $set: {
-          "authorizedBy.name": req.body.authorizedBy?.name || null,
-          "authorizedBy.designation":
-            req.body.authorizedBy?.designation || null,
-          "authorizedBy.signature": req.body.authorizedBy?.signature || null,
           debitLedgers: req.body.debitLedgers || [],
           creditLedgers: req.body.creditLedgers || [],
           items: req.body.items || [],
@@ -248,6 +264,7 @@ const updateSales = async (req, res) => {
           creditDueDate: req.body.creditDueDate || "",
           description: req.body.description || "",
           thisPurchase: req.body.thisPurchase || "",
+          saleInvoiceNumber: req.body.saleInvoiceNumber || "",
           total: req.body.total || 0,
           taxAmount: req.body.taxAmount || 0,
           taxRate: req.body.taxRate || 0,

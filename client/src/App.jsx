@@ -211,10 +211,6 @@ function App() {
                     />
 
                     <Route
-                      path="paymasterreport/:month"
-                      element={<PayMasterReportMonth />}
-                    />
-                    <Route
                       path="mvehicleRentTable"
                       element={<MVehicleRentTable />}
                     />
@@ -540,7 +536,10 @@ function App() {
                       path="owneredit/:employeeId"
                       element={<OwnerEdit />}
                     />
-
+                    <Route
+                      path="paymasterreport/:month"
+                      element={<PayMasterReportMonth />}
+                    />
                     <Route
                       path="indirectexpencedetails/:group"
                       element={<IndirectExpensesDetails />}
@@ -589,7 +588,10 @@ function App() {
                       element={<SalaryPayHeadForm />}
                     />
                     <Route path="payhaddetails" element={<PayHeadDetailss />} />
-                    <Route path="paymaster" element={<PayMaster />} />
+                    <Route
+                      path="paymaster/:employeeId"
+                      element={<PayMaster />}
+                    />
                     <Route
                       path="paymasterpriview"
                       element={<PayMasterPriview />}
@@ -672,6 +674,8 @@ function App() {
                     <Route path="salesereports" element={<SalesReport />} />
                     <Route path="receiptreports" element={<ReceiptReport />} />
                     <Route path="journalreports" element={<JournalReport />} />
+                    <Route path="invoice-preview" element={<ItemsMain />} />
+                    <Route path="ledgerlist" element={<LedgerList />} />
                     <Route path="contrareports" element={<ContraReport />} />
                     <Route
                       path="debitNotereports"

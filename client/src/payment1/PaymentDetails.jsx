@@ -114,7 +114,7 @@ const PaymentDetails = () => {
       const response = await createJournalVoucher(voucherData);
       console.log("response", response);
       if (response?.data?.voucherType === "Payment Voucher") {
-        toast.success("Journal created successfully!");
+        toast.success("your Payment Success!");
         setVoucherData({
           voucherNumber: "",
           date: "",

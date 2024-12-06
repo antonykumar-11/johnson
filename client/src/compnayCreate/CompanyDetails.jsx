@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useGetCompaniesQuery } from "../store/api/CompanyApi";
 import { useNavigate } from "react-router-dom";
 
@@ -6,7 +6,7 @@ const CompanyList = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
 
-  const { data, isLoading, isError } = useGetCompaniesQuery();
+  const { data, isLoading, isError, refetch } = useGetCompaniesQuery();
 
   // Access the companies array correctly
   const companies = data?.data || []; // Adjust based on your API response
@@ -14,7 +14,9 @@ const CompanyList = () => {
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
   };
-
+  useEffect(() => {
+    refetch();
+  }, [refetch]);
   const handleSelectCompany = (id) => {
     navigate(`/admin/company/${id}`); // Redirect to company details page
   };

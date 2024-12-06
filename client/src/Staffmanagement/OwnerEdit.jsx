@@ -99,7 +99,15 @@ const OwnerEdit = () => {
   const handleShowSalaryCalculator = () => {
     navigate(`/staff/setting/${employeeId}`);
   };
+  const createPayment = () => {
+    // Sending employeeId and employee.userName in the state
+    navigate(`/staff/paymaster/${employeeId}`, {
+      state: { EmployeeName: employee.userName },
+    });
+  };
 
+  console.log("emplo", employee);
+  console.log("formData", formData);
   return (
     <div className="p-6 bg-gray-100 dark:bg-gray-900 text-gray-700 dark:text-gray-300 min-h-screen">
       <div className="max-w-4xl mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
@@ -115,7 +123,7 @@ const OwnerEdit = () => {
               className="text-3xl font-bold text-gray-900 dark:text-gray-100"
               style={{ fontFamily: "'Orbitron', sans-serif" }}
             >
-              {formData.userName || employee.userName}
+              {employee.userName}
             </h2>
             <p className="text-lg text-gray-600 dark:text-gray-400">
               For Company: {formData.underEmployee || "Owner of Vehicle"}
@@ -133,14 +141,14 @@ const OwnerEdit = () => {
             style={{ fontFamily: "'Orbitron', sans-serif" }}
           >
             {employee.registrationType === "vehicle"
-              ? "Vehicle Details"
+              ? "Owner and Vehicle Details"
               : "Employee Details"}
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Left Column */}
             <div>
               <div>
-                <p>Name: {formData.userName || employee.userName}</p>
+                <p>Name: {employee.userName}</p>
                 <p className="text-sm text-gray-600 dark:text-gray-400">
                   {employee.dateOfBirth
                     ? `Date of Birth: ${new Date(
@@ -267,6 +275,12 @@ const OwnerEdit = () => {
             className="bg-yellow-500 text-white px-4 py-2 rounded-md hover:bg-yellow-600 dark:bg-yellow-600 dark:hover:bg-yellow-700 w-full md:w-auto"
           >
             Show Salary Calculator
+          </button>
+          <button
+            onClick={createPayment}
+            className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-yellow-600 dark:bg-yellow-600 dark:hover:bg-yellow-700 w-full md:w-auto"
+          >
+            create payment
           </button>
           <button
             onClick={handleDelete}

@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { AiOutlineClose } from "react-icons/ai";
 import { useGetGroupsQuery } from "../../store/api/Group";
 import useTheme from "../../context/Theme";
 
-const Ledger = ({ closeModal, onLedgerCreate }) => {
+const Ledger = ({ closeModal, onLedgerCreate, EmployeeName }) => {
+  console.log("EmployeeName", EmployeeName);
   const { themeMode } = useTheme();
   const { data: groupsData = [], isLoading } = useGetGroupsQuery(); // Fetch groups
   const [formData, setFormData] = useState({
@@ -16,10 +17,17 @@ const Ledger = ({ closeModal, onLedgerCreate }) => {
     description: "",
     openingBalance: "", // Initial state for opening balance
     date: "",
+    EmployeeName: EmployeeName || "", // Set EmployeeName by default
   });
   console.log("formData", formData);
   const [error, setError] = useState(null);
-
+  useEffect(() => {
+    // Update formData if EmployeeName changes (in case it's dynamic)
+    setFormData((prevData) => ({
+      ...prevData,
+      EmployeeName: EmployeeName || "", // Ensure EmployeeName is updated when passed
+    }));
+  }, [EmployeeName]);
   // Handle form input change
   const handleChange = (e) => {
     const { name, value } = e.target;

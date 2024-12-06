@@ -75,7 +75,7 @@ const Invoice = ({ data }) => {
                     src={invoice.avatar}
                     alt="Company Logo"
                     className="absolute right-12 top-6 transform -translate-y-1/2 w-28 h-28  rounded-full  "
-                    style={{ marginTop: "4rem" }}
+                    style={{ marginTop: "2rem" }}
                   />
                 </div>
 
@@ -136,40 +136,45 @@ const Invoice = ({ data }) => {
         {/* Billed and Shipped To Addresses */}
         <div className="mb-10">
           <div className="flex justify-between">
-            <div>
-              <h2 className="text-lg font-semibold text-gray-600">
-                Billed To:
-              </h2>
-              <div className="text-sm text-gray-600">
-                <p>{data.purchasedBy.companyName}</p>
-                <p>{data.purchasedBy.street}</p>
-                <p>{data.purchasedBy.MainArea}</p>
-                <p>{data.purchasedBy.postOffice}</p>
-                <p>{data.purchasedBy.City}</p>
-                <p>{data.purchasedBy.State}</p>
-                <p>{data.purchasedBy.Country}</p>
-                <p>{data.purchasedBy.ZIPCode}</p>
-                <p>{data.purchasedBy.companyPanNumber}</p>
-                <p>{data.purchasedBy.gstNumber}</p>
+            {data.purchasedBy && (
+              <div>
+                <h2 className="text-lg font-semibold text-gray-600">
+                  Billed To:
+                </h2>
+                <div className="text-sm text-gray-600">
+                  <p>{data.purchasedBy.companyName}</p>
+                  <p>{data.purchasedBy.street}</p>
+                  <p>{data.purchasedBy.MainArea}</p>
+                  <p>{data.purchasedBy.postOffice}</p>
+                  <p>{data.purchasedBy.City}</p>
+                  <p>{data.purchasedBy.State}</p>
+                  <p>{data.purchasedBy.Country}</p>
+                  <p>{data.purchasedBy.ZIPCode}</p>
+                  <p>{data.purchasedBy.companyPanNumber}</p>
+                  <p>{data.purchasedBy.gstNumber}</p>
+                </div>
               </div>
-            </div>
-            <div className="text-right">
-              <h2 className="text-lg font-semibold text-gray-600">
-                Shipped To:
-              </h2>
-              <div className="text-sm text-gray-600">
-                <p>{data.purchasedTo.companyName}</p>
-                <p>{data.purchasedTo.street}</p>
-                <p>{data.purchasedTo.MainArea}</p>
-                <p>{data.purchasedTo.postOffice}</p>
-                <p>{data.purchasedTo.City}</p>
-                <p>{data.purchasedTo.State}</p>
-                <p>{data.purchasedTo.Country}</p>
-                <p>{data.purchasedTo.ZIPCode}</p>
-                <p>{data.purchasedTo.companyPanNumber}</p>
-                <p>{data.purchasedTo.gstNumber}</p>
+            )}
+
+            {data.purchasedTo && (
+              <div className="text-right">
+                <h2 className="text-lg font-semibold text-gray-600">
+                  Shipped To:
+                </h2>
+                <div className="text-sm text-gray-600">
+                  <p>{data.purchasedTo.companyName}</p>
+                  <p>{data.purchasedTo.street}</p>
+                  <p>{data.purchasedTo.MainArea}</p>
+                  <p>{data.purchasedTo.postOffice}</p>
+                  <p>{data.purchasedTo.City}</p>
+                  <p>{data.purchasedTo.State}</p>
+                  <p>{data.purchasedTo.Country}</p>
+                  <p>{data.purchasedTo.ZIPCode}</p>
+                  <p>{data.purchasedTo.companyPanNumber}</p>
+                  <p>{data.purchasedTo.gstNumber}</p>
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
 

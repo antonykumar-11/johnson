@@ -79,14 +79,17 @@ const SaleSchema = new Schema(
     received: { type: Number }, // Changed from paid to received
     purchasedTo: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Company", // Reference to the Company model
-      required: true,
+      ref: "Company",
+      required: false,
+      default: null, // Default to null when not provided
     },
     purchasedBy: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Company", // Reference to the Company model
-      required: true,
+      ref: "Company",
+      required: false,
+      default: null, // Default to null when not provided
     },
+
     debitLedgers: { type: [LedgerEntrySchema], required: false }, // Array of debit ledger entries
     creditLedgers: { type: [LedgerEntrySchema], required: false }, // Array of credit ledger entries
     balanceBillByBill: { type: Boolean, default: false },
@@ -94,6 +97,7 @@ const SaleSchema = new Schema(
     panItNo: { type: String },
     registrationType: { type: String },
     gstinUin: { type: String },
+    saleInvoiceNumber: { type: String },
     transactionType: { type: String },
     subTotal: { type: Number, required: false },
     total: { type: Number, required: false },
@@ -134,42 +138,58 @@ SaleSchema.pre("validate", function (next) {
   );
   next();
 });
-
-// Middleware to set transactionDate based on soldBy.invoiceDate and generate voucherNumber
-SaleSchema.pre("save", async function (next) {
-  // Set transactionDate based on soldBy.invoiceDate if available
-  if (this.soldBy && this.soldBy.invoiceDate) {
-    this.transactionDate = this.soldBy.invoiceDate;
+SaleSchema.pre("save", function (next) {
+  // Set purchasedTo and purchasedBy to null if they are undefined or an empty string
+  if (!this.purchasedTo || this.purchasedTo === "") {
+    this.purchasedTo = null;
   }
-
-  // Automatically generate voucherNumber if not present
-  if (!this.voucherNumber) {
-    const lastSale = await this.constructor
-      .findOne()
-      .sort({ voucherNumber: -1 })
-      .exec();
-    const lastVoucherNumber = lastSale ? parseInt(lastSale.voucherNumber) : 0;
-    this.voucherNumber = (lastVoucherNumber + 1).toString().padStart(6, "0");
+  if (!this.purchasedBy || this.purchasedBy === "") {
+    this.purchasedBy = null;
   }
-
-  // Calculate creditDueDate based on transactionDate and creditPeriod
-  if (this.transactionDate && this.creditPeriod) {
-    const transactionDate = new Date(this.transactionDate);
-    const creditPeriod = parseInt(this.creditPeriod, 10); // Convert creditPeriod to an integer
-
-    // Add the creditPeriod (in days) to the transactionDate
-    const creditDueDate = new Date(
-      transactionDate.setDate(transactionDate.getDate() + creditPeriod)
-    );
-
-    this.creditDueDate = creditDueDate;
-  }
-
   next();
 });
-// Create a unique index on the owner field only
-SaleSchema.index({ owner: 1 }, { unique: true });
 
+// Middleware to set transactionDate based on soldBy.invoiceDate and generate voucherNumber
+SaleSchema.pre(
+  "save",
+  async function (next) {
+    // Set transactionDate based on soldBy.invoiceDate if available
+    if (this.soldBy && this.soldBy.invoiceDate) {
+      this.transactionDate = this.soldBy.invoiceDate;
+    }
+
+    // Automatically generate voucherNumber if not present
+    if (!this.voucherNumber) {
+      const lastSale = await this.constructor
+        .findOne()
+        .sort({ voucherNumber: -1 })
+        .exec();
+      const lastVoucherNumber = lastSale ? parseInt(lastSale.voucherNumber) : 0;
+      this.voucherNumber = (lastVoucherNumber + 1).toString().padStart(6, "0");
+    }
+
+    // Calculate creditDueDate based on transactionDate and creditPeriod
+    if (this.transactionDate && this.creditPeriod) {
+      const transactionDate = new Date(this.transactionDate);
+      const creditPeriod = parseInt(this.creditPeriod, 10); // Convert creditPeriod to an integer
+
+      // Add the creditPeriod (in days) to the transactionDate
+      const creditDueDate = new Date(
+        transactionDate.setDate(transactionDate.getDate() + creditPeriod)
+      );
+
+      this.creditDueDate = creditDueDate;
+    }
+
+    next();
+  },
+  {
+    timestamps: true,
+  }
+);
+
+// Create a compound index for name and owner
+SaleSchema.index({ name: 1, owner: 1 }, { unique: true }); // Ensure this is set
 // Create and export the Sale model
 const Sales = mongoose.model("Sales", SaleSchema);
 module.exports = Sales;

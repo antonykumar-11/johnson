@@ -61,7 +61,7 @@ const PayMasterPriview = () => {
 
   // Function to handle row clicks and navigate to detailed month report
   const handleAccountClick = (month) => {
-    navigate(`/admin/paymasterreport/${month}`);
+    navigate(`/staff/paymasterreport/${month}`);
   };
 
   if (isLoading) return <div className="text-center p-4">Loading...</div>;

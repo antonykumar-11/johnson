@@ -8,12 +8,6 @@ function ReportTrackerHeader() {
           to="/reports/purchasereport"
           className="px-1 py-1 no-underline rounded hover:text-white hover:bg-black dark:hover:bg-gradient-to-r from-green-400 to-blue-500"
         >
-          Staffs
-        </NavLink>
-        <NavLink
-          to="/reports/purchasereport"
-          className="px-1 py-1 no-underline rounded hover:text-white hover:bg-black dark:hover:bg-gradient-to-r from-green-400 to-blue-500"
-        >
           purchasereport
         </NavLink>
         <NavLink
@@ -41,22 +35,28 @@ function ReportTrackerHeader() {
           journalreports
         </NavLink>
         <NavLink
-          to="/reports/contrareports"
+          to="/reports/invoice-preview"
           className="px-1 py-1 no-underline rounded hover:text-white hover:bg-black dark:hover:bg-gradient-to-r from-green-400 to-blue-500"
         >
-          contrareports
+          invoice preview
         </NavLink>
         <NavLink
-          to="/reports/debitNotereports"
+          to="/reports/ledgerlist"
           className="px-1 py-1 no-underline rounded hover:text-white hover:bg-black dark:hover:bg-gradient-to-r from-green-400 to-blue-500"
         >
-          debitNotereports
+          All Ledger
         </NavLink>
         <NavLink
-          to="/reports/creditNotereports"
+          to="/reports/incomemain"
           className="px-1 py-1 no-underline rounded hover:text-white hover:bg-black dark:hover:bg-gradient-to-r from-green-400 to-blue-500"
         >
-          creditNotereports
+          Single Ledger
+        </NavLink>
+        <NavLink
+          to="/reports/droupreports"
+          className="px-1 py-1 no-underline rounded hover:text-white hover:bg-black dark:hover:bg-gradient-to-r from-green-400 to-blue-500"
+        >
+          Groups
         </NavLink>
       </div>
     </div>

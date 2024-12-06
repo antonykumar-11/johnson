@@ -30,6 +30,37 @@ exports.getAllLedgers = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+exports.getAllLedgersPay = async (req, res) => {
+  try {
+    const { employeeName } = req.query; // Get employeeName from the query parameters
+
+    // Query 1: Fetch ledgers with the EmployeeName field (if employeeName is provided)
+    const employeeLedgers = employeeName
+      ? await Ledger.find({ EmployeeName: employeeName })
+      : await Ledger.find({ EmployeeName: { $exists: true, $ne: null } });
+
+    // Query 2: Fetch ledgers where the group is "Bank Accounts"
+    const bankAccountsLedgers = await Ledger.find({ group: "Bank Accounts" });
+
+    // Query 3: Fetch ledgers where the group is "Cash-in-Hand"
+    const cashInHandLedgers = await Ledger.find({ group: "Cash-in-Hand" });
+
+    // Combine the results into a single array
+    const ledgers = [
+      ...employeeLedgers,
+      ...bankAccountsLedgers,
+      ...cashInHandLedgers,
+    ];
+
+    // Return the combined results as a single array
+    res.status(200).json(ledgers);
+    console.log("ledgers", ledgers);
+  } catch (err) {
+    console.error("Error fetching ledgers:", err);
+    res.status(500).json({ message: err.message });
+  }
+};
+
 // Get all ledgers
 // exports.getAllLedgersPay = async (req, res) => {
 //   const voucher1 = "PayMaster"; // Set voucher1 to "PayMaster"
@@ -93,23 +124,6 @@ exports.getAllLedgers = async (req, res) => {
 //     res.status(500).json({ message: err.message });
 //   }
 // };
-exports.getAllLedgersPay = async (req, res) => {
-  try {
-    // Fetch all ledgers for the user
-    const ledgers = await Ledger.find({ owner: req.user.id });
-
-    // If no ledgers found, return a 404
-    if (ledgers.length === 0) {
-      return res.status(404).json({ message: "No ledgers found." });
-    }
-
-    // Return the found ledgers
-    res.status(200).json(ledgers);
-  } catch (err) {
-    console.error("Error fetching ledgers:", err);
-    res.status(500).json({ message: err.message });
-  }
-};
 
 // Get all ledgers with specific StockName
 exports.getAllLedgersall = async (req, res) => {

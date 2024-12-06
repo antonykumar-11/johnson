@@ -221,6 +221,7 @@ const OwnerAllEdir = () => {
         group: formData.group,
         nature: formData.nature,
         category: formData.category,
+        EmployeeName: formData.name,
       };
 
       // Update the ledger

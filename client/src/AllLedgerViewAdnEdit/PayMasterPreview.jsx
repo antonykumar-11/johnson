@@ -22,7 +22,6 @@ const PayMasterPreview = () => {
     debitLedgers: [{ ledgerId: "", ledgerName: "", amount: "" }],
     creditLedgers: [{ ledgerId: "", ledgerName: "", amount: "" }],
     description: "",
-    bookSalary: false, // Added field for booking salary
   });
   console.log("voucherData", voucherData);
   const { data: ledgers = [] } = useGetLedgerQuery();
@@ -31,13 +30,13 @@ const PayMasterPreview = () => {
 
   const { themeMode } = useTheme();
 
-  const { data: existingVoucher = {} } = useGetPaymasterVoucherByIdQuery(
-    transactionId,
-    {
+  const { data: existingVoucher = {}, refetch } =
+    useGetPaymasterVoucherByIdQuery(transactionId, {
       skip: !transactionId,
-    }
-  );
-
+    });
+  useEffect(() => {
+    refetch();
+  }, [refetch]);
   useEffect(() => {
     if (existingVoucher) {
       setVoucherData({
@@ -49,8 +48,8 @@ const PayMasterPreview = () => {
   }, [existingVoucher]);
 
   const handleAmountChange = (index, ledgerType, value) => {
-    const updatedLedgers = [...voucherData[ledgerType]];
-    updatedLedgers[index].amount = value;
+    const updatedLedgers = [...voucherData[ledgerType]]; // Create a shallow copy of the array
+    updatedLedgers[index] = { ...updatedLedgers[index], amount: value }; // Create a new object with updated 'amount'
     setVoucherData((prevData) => ({
       ...prevData,
       [ledgerType]: updatedLedgers,
@@ -106,32 +105,29 @@ const PayMasterPreview = () => {
     });
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (event) => {
+    event.preventDefault(); // Prevent the default form submit behavior
+
     try {
       await updatePayMaster({
         ...voucherData,
         id: transactionId,
       }).unwrap();
-      navigate("/expense/incomemain");
+      navigate("/staff/paymasterpriview");
     } catch (error) {
       console.error("Failed to update voucher:", error);
     }
   };
 
-  const handleDelete = async () => {
+  const handleDelete = async (event) => {
+    event.preventDefault(); // Prevent the default behavior (e.g., form submission)
+
     try {
       await deletePayMaster(transactionId).unwrap();
       navigate("/expense/incomemain");
     } catch (error) {
       console.error("Failed to delete voucher:", error);
     }
-  };
-
-  const handleSalaryBooking = () => {
-    setVoucherData((prevData) => ({
-      ...prevData,
-      bookSalary: !prevData.bookSalary,
-    }));
   };
 
   const containerClass = `max-w-4xl mx-auto p-6 shadow-lg rounded-lg ${
@@ -335,20 +331,6 @@ const PayMasterPreview = () => {
                     e.target.style.height = `${e.target.scrollHeight}px`; // Adjust height based on content
                   }}
                 />
-              </div>
-
-              {/* Book Salary Section */}
-              <div className="flex items-center mt-6">
-                <input
-                  id="bookSalary"
-                  type="checkbox"
-                  checked={voucherData.bookSalary}
-                  onChange={handleSalaryBooking}
-                  className="mr-2"
-                />
-                <label htmlFor="bookSalary" className="text-sm font-medium">
-                  Book Salary
-                </label>
               </div>
 
               {/* Buttons Section */}

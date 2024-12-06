@@ -120,7 +120,9 @@ exports.createPayMasterVoucher = async (req, res) => {
 exports.getAllPayMasterVouchers = async (req, res) => {
   try {
     // Fetch only the vouchers owned by the authenticated user
-    const payMasterVouchers = await PayMaster.find({ owner: req.user._id });
+    const payMasterVouchers = await PayMaster.find({
+      owner: req.user._id,
+    });
     res.status(200).json(payMasterVouchers);
   } catch (error) {
     res.status(500).json({ message: error.message });

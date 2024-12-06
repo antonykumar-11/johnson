@@ -419,72 +419,69 @@ const InvoicePDF = ({ data, invoiceList }) => {
           {/* Billed and Shipped To Addresses */}
           <View style={styles.invoiceAddresses}>
             <View style={styles.invoiceAddressesFlex}>
-              <View>
-                <Text style={styles.invoiceAddressTitle}>Billed To:</Text>
+              {data.purchasedBy && (
+                <View>
+                  <Text style={styles.invoiceAddressTitle}>Billed To:</Text>
+                  <>
+                    <Text style={styles.invoiceDetailsText}>
+                      {data.purchasedBy.street}
+                    </Text>
+                    <Text style={styles.invoiceDetailsText}>
+                      {data.purchasedBy.MainArea}
+                    </Text>
+                    <Text style={styles.invoiceDetailsText}>
+                      {data.purchasedBy.postOffice}
+                    </Text>
+                    <Text style={styles.invoiceDetailsText}>
+                      {data.purchasedBy.ZIPCode}
+                    </Text>
+                    <Text style={styles.invoiceDetailsText}>
+                      {data.purchasedBy.City}
+                    </Text>
+                    <Text style={styles.invoiceDetailsText}>
+                      {data.purchasedBy.State}
+                    </Text>
+                    <Text style={styles.invoiceDetailsText}>
+                      {data.purchasedBy.Country}
+                    </Text>
+                    <Text style={styles.invoiceDetailsText}>
+                      GST NO: {data.purchasedBy.gstNumber}
+                    </Text>
+                  </>
+                </View>
+              )}
 
-                <>
-                  <Text style={styles.invoiceDetailsText}>
-                    {data.purchasedBy.street}
-                  </Text>
-                  <Text style={styles.invoiceDetailsText}>
-                    {data.purchasedBy.MainArea}
-                  </Text>
-                  <Text style={styles.invoiceDetailsText}>
-                    {data.purchasedBy.postOffice}
-                  </Text>
-                  <Text style={styles.invoiceDetailsText}>
-                    {data.purchasedBy.ZIPCode}
-                  </Text>
-                  <Text style={styles.invoiceDetailsText}>
-                    {data.purchasedBy.City}
-                  </Text>
-                  <Text style={styles.invoiceDetailsText}>
-                    {data.purchasedBy.State}
-                  </Text>
-                  <Text style={styles.invoiceDetailsText}>
-                    {data.purchasedBy.Country}
-                  </Text>
-                  <Text style={styles.invoiceDetailsText}>
-                    PAN NO : {data.purchasedBy.companyPanNumber}
-                  </Text>
-                  <Text style={styles.invoiceDetailsText}>
-                    GST NO :{data.purchasedBy.gstNumber}
-                  </Text>
-                </>
-              </View>
-              <View>
-                <Text style={styles.invoiceAddressTitle}>Shipped To:</Text>
-
-                <>
-                  <Text style={styles.invoiceDetailsText}>
-                    {data.purchasedTo.street}
-                  </Text>
-                  <Text style={styles.invoiceDetailsText}>
-                    {data.purchasedTo.MainArea}
-                  </Text>
-                  <Text style={styles.invoiceDetailsText}>
-                    {data.purchasedTo.postOffice}
-                  </Text>
-                  <Text style={styles.invoiceDetailsText}>
-                    {data.purchasedTo.ZIPCode}
-                  </Text>
-                  <Text style={styles.invoiceDetailsText}>
-                    {data.purchasedTo.City}
-                  </Text>
-                  <Text style={styles.invoiceDetailsText}>
-                    {data.purchasedTo.State}
-                  </Text>
-                  <Text style={styles.invoiceDetailsText}>
-                    {data.purchasedTo.Country}
-                  </Text>
-                  <Text style={styles.invoiceDetailsText}>
-                    PAN NO : {data.purchasedTo.companyPanNumber}
-                  </Text>
-                  <Text style={styles.invoiceDetailsText}>
-                    GST NO : {data.purchasedTo.gstNumber}
-                  </Text>
-                </>
-              </View>
+              {data.purchasedTo && (
+                <View>
+                  <Text style={styles.invoiceAddressTitle}>Shipped To:</Text>
+                  <>
+                    <Text style={styles.invoiceDetailsText}>
+                      {data.purchasedTo.street}
+                    </Text>
+                    <Text style={styles.invoiceDetailsText}>
+                      {data.purchasedTo.MainArea}
+                    </Text>
+                    <Text style={styles.invoiceDetailsText}>
+                      {data.purchasedTo.postOffice}
+                    </Text>
+                    <Text style={styles.invoiceDetailsText}>
+                      {data.purchasedTo.ZIPCode}
+                    </Text>
+                    <Text style={styles.invoiceDetailsText}>
+                      {data.purchasedTo.City}
+                    </Text>
+                    <Text style={styles.invoiceDetailsText}>
+                      {data.purchasedTo.State}
+                    </Text>
+                    <Text style={styles.invoiceDetailsText}>
+                      {data.purchasedTo.Country}
+                    </Text>
+                    <Text style={styles.invoiceDetailsText}>
+                      GST NO: {data.purchasedTo.gstNumber}
+                    </Text>
+                  </>
+                </View>
+              )}
             </View>
           </View>
 

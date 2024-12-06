@@ -15,12 +15,13 @@ const PayMasterViewEdit = () => {
   const [voucherData, setVoucherData] = useState({
     voucherType: "Journal Voucher",
     voucherNumber: "",
+    EmployeeName: "",
     date: "",
     debitLedgers: [{ ledgerId: "", ledgerName: "", amount: "" }],
     creditLedgers: [{ ledgerId: "", ledgerName: "", amount: "" }],
     description: "",
   });
-
+  console.log("voucherData", voucherData);
   const {
     data: ledgers = [],
     isLoading: ledgersLoading,
@@ -57,6 +58,7 @@ const PayMasterViewEdit = () => {
     setVoucherData((prevData) => ({
       ...prevData,
       [ledgerType]: updatedLedgers,
+      EmployeeName: ledger?.EmployeeName || "", // Assign EmployeeName or default to ""
     }));
   };
 

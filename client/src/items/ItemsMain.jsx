@@ -14,6 +14,7 @@ const InvoiceContainer = () => {
   const invoiceList1 = invoicesResponse?.data || [];
   const invoiceList = invoicesResponse?.data?.invoices || [];
   const salesList = invoicesResponse?.data?.sales || [];
+  console.log("salesList", salesList);
   const [selectedInvoice, setSelectedInvoice] = useState(null);
   console.log("selectedInvoice", selectedInvoice);
   useEffect(() => {
@@ -93,23 +94,18 @@ const InvoiceContainer = () => {
                   <td className="py-2 px-4 border-b">
                     {invoice.saleInvoiceNumber}
                   </td>
-                  {invoiceList.length > 0 ? (
-                    invoiceList.map((invoice) => (
-                      <td key={invoice._id} className="py-2 px-4 border-b">
-                        {invoice.companyName}
-                      </td>
-                    ))
-                  ) : (
-                    <td colSpan={1} className="py-2 px-4 border-b text-center">
-                      No invoices found.
-                    </td>
-                  )}
-
+                  <td className="py-2 px-4 border-b">
+                    {invoice.purchasedBy?.companyName ||
+                      invoice.purchasedTo?.companyName ||
+                      "Unknown Company"}
+                  </td>
                   <td className="py-2 px-4 border-b">
                     {formatDate(invoice.transactionDate)}
                   </td>
                   <td className="py-2 px-4 border-b">
-                    {calculateTotal(invoice.items).toFixed(2)}
+                    {invoice.items
+                      ? calculateTotal(invoice.items).toFixed(2)
+                      : "0.00"}
                   </td>
                   <td className="py-2 px-4 border-b">
                     <button

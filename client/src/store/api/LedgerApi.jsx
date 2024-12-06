@@ -28,8 +28,12 @@ export const ledgerApi = createApi({
       query: () => "ledgers",
     }),
     getLedgerPay: builder.query({
-      query: () => "ledgers/pay",
+      query: (employeeName) => {
+        console.log("Employee Name:", employeeName); // Log the employee name
+        return `ledgers/pay?employeeName=${employeeName}`; // Pass it as a query parameter
+      },
     }),
+
     getLedgerAll: builder.query({
       query: () => "ledgers/all",
     }),

@@ -8,6 +8,8 @@ import {
 import { useGetLedgerQuery } from "../store/api/LedgerApi";
 import LedgerMiddleWares from "../middlewares/LedgerMiddleWares";
 import useTheme from "../context/Theme";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const JournalVoucher = () => {
   const { transactionId } = useParams();
@@ -118,6 +120,7 @@ const JournalVoucher = () => {
       await updateJournalVoucher({ id: transactionId, ...voucherData });
       refetchVoucherData();
       navigate("/reports/journalreports"); // Redirect after update
+      toast.success("Journal Update successfully!");
     } catch (error) {
       console.error("Failed to update journal voucher:", error);
     }
@@ -128,6 +131,7 @@ const JournalVoucher = () => {
       try {
         await deleteJournalVoucher(transactionId);
         navigate("/reports/journalreports"); // Redirect after delete
+        toast.success("Journal Delete successfully!");
       } catch (error) {
         console.error("Failed to delete journal voucher:", error);
       }

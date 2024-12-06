@@ -8,6 +8,7 @@ import EditLedgerModal from "./EditLedgerModal";
 const LedgerList = () => {
   // Get data, error, and isLoading status
   const { data: ledgers, error, isLoading, refetch } = useGetLedgerQuery();
+  console.log("ledgers", ledgers);
   // Initialize delete ledger mutation
   const [deleteLedger] = useDeleteLedgerMutation();
   // State for the ledger being edited
@@ -74,8 +75,13 @@ const LedgerList = () => {
               className="border-t border-gray-300 dark:border-gray-600"
             >
               <td className="px-6 py-4 text-sm text-gray-500 dark:text-gray-400">
-                {new Date(ledger.date).toLocaleDateString()}
+                {ledger.date
+                  ? new Date(ledger.date).toLocaleDateString()
+                  : ledger.createdAt
+                  ? new Date(ledger.createdAt).toLocaleDateString()
+                  : "N/A"}
               </td>
+
               <td className="px-6 py-4 text-sm text-gray-500 dark:text-gray-400">
                 {ledger.name}
               </td>

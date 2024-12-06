@@ -91,7 +91,7 @@ const SalesPreview = () => {
     taxAmount: 0,
     total: 0,
   });
-  console.log("salesPreview", purchaseData);
+  console.log("purchaseData", purchaseData);
   const handleChange = (e) => {
     const { name, value } = e.target;
     const keys = name.split(".");
@@ -177,9 +177,8 @@ const SalesPreview = () => {
   }, [selectedVoucherIds]);
   useEffect(() => {
     if (purchaseData.transactionDate && purchaseData.creditPeriod) {
-      console.log("creditDate", purchaseData.creditPeriod);
       const transactionDate = new Date(purchaseData.transactionDate);
-      console.log("creditDate", transactionDate);
+
       const creditDueDate = new Date(transactionDate);
 
       creditDueDate.setDate(
@@ -189,6 +188,8 @@ const SalesPreview = () => {
       setPurchaseData((prevData) => ({
         ...prevData,
         creditDueDate: creditDueDate.toISOString().split("T")[0],
+        purchasedBy: purchaseData?.purchasedBy._id,
+        purchasedTo: purchaseData?.purchasedTo._id,
       }));
     }
   }, [purchaseData.transactionDate, purchaseData.creditPeriod]);
@@ -216,7 +217,7 @@ const SalesPreview = () => {
       const updateResult = await createSales(payload).unwrap(); // Assuming updatePayment is the API call
 
       if (updateResult) {
-        toast.success("Payment updated successfully!", {
+        toast.success("Sales updated successfully!", {
           autoClose: 3000, // Show success toast for 3 seconds
         });
 
@@ -224,16 +225,16 @@ const SalesPreview = () => {
         voucherChecking(); // Custom function to check vouchers
         resetFormData(); // Custom function to reset form data and states
         refetchVoucherData();
-        navigate("/admin/balancesheet");
+        navigate("/reports/salesereports");
       }
     } catch (error) {
-      console.error("Failed to update payment:", error);
+      console.error("Failed to update Sales:", error);
 
       // Show error toast with specific message if available
       const errorMessage =
         error?.data?.message ||
         error.message ||
-        "An error occurred while updating the payment.";
+        "An error occurred while updating the Sales.";
 
       toast.error(errorMessage, {
         autoClose: 3000, // Show error toast for 3 seconds
@@ -253,22 +254,22 @@ const SalesPreview = () => {
       const deleteResult = await deletePayment(transactionId).unwrap(); // Use the ID directly
 
       if (deleteResult) {
-        toast.success("Payment deleted successfully!", {
+        toast.success("Sales deleted successfully!", {
           autoClose: 3000, // Show success toast for 3 seconds
         });
         refetchVoucherData();
-        navigate("/admin/balancesheet");
+        navigate("/reports/salesereports");
         // Perform any necessary actions after successful deletion
         voucherChecking(); // Custom function to check vouchers
       }
     } catch (error) {
-      console.error("Failed to delete payment:", error);
+      console.error("Failed to delete sales:", error);
 
       // Show error toast with specific message if available
       const errorMessage =
         error?.data?.message ||
         error.message ||
-        "An error occurred while deleting the payment.";
+        "An error occurred while deleting the sales.";
 
       toast.error(errorMessage, {
         autoClose: 3000, // Show error toast for 3 seconds
@@ -455,6 +456,7 @@ const SalesPreview = () => {
   console.log("date", purchaseVouchers);
   useEffect(() => {
     if (paymentVoucher) {
+      console.log("paymentVoucher", paymentVoucher);
       // Update debitNote state including transactionId
       setDebitNote((prevData) => ({
         ...prevData,
@@ -474,6 +476,8 @@ const SalesPreview = () => {
         transactionDate: paymentVoucher.transactionDate
           ? new Date(paymentVoucher.transactionDate).toISOString().split("T")[0]
           : "",
+        purchasedBy: paymentVoucher?.purchasedBy._id,
+        purchasedTo: paymentVoucher?.purchasedTo._id,
       });
       // if (paymentVoucher && paymentVoucher.status) {
       //   // Set the initial value to paymentVoucher.status

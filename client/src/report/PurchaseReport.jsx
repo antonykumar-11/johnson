@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useEffect } from "react";
 import { useCheckVoucherNumbersQuery } from "../store/api/PurchaseApi";
 import { useNavigate } from "react-router-dom";
 
@@ -20,12 +20,15 @@ const PurchaseReport = () => {
     data: purchase,
     isLoading,
     isError,
+    refetch,
   } = useCheckVoucherNumbersQuery(purchaseData.thisPurchase, {
     skip: !purchaseData.thisPurchase,
   });
 
   const navigate = useNavigate();
-
+  useEffect(() => {
+    refetch();
+  }, [refetch]);
   // Memoized summary of debits month-wise and closing balance
   const monthSummary = useMemo(() => {
     if (!purchase) return {}; // Return empty if purchase is undefined or null

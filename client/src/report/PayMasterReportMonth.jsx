@@ -30,6 +30,7 @@ const PayMasterReportMonth = () => {
 
   useEffect(() => {
     if (vouchers) {
+      console.log("vouchers", vouchers);
       const transactionsForMonth = vouchers.filter((voucher) => {
         const voucherDate = new Date(voucher.date);
         const formattedMonth = voucherDate.toLocaleString("default", {
@@ -65,7 +66,36 @@ const PayMasterReportMonth = () => {
     setTotalDebitForMonth(totals.totalDebit.toFixed(2));
     setTotalCreditForMonth(totals.totalCredit.toFixed(2));
   };
+  // Function to calculate totals
+  // Function to calculate totals
+  const calculateGroupTotals = (vouchers) => {
+    if (!vouchers || !Array.isArray(vouchers)) return {}; // Safeguard against undefined or incorrect data
 
+    const totals = {};
+
+    vouchers.forEach((voucher) => {
+      // Process debit ledgers
+      voucher?.debitLedgers?.forEach((debit) => {
+        if (!totals[debit.group]) {
+          totals[debit.group] = 0; // Initialize group if not already present
+        }
+        totals[debit.group] += debit.amount; // Add debit amount
+      });
+
+      // Process credit ledgers
+      voucher?.creditLedgers?.forEach((credit) => {
+        if (!totals[credit.group]) {
+          totals[credit.group] = 0; // Initialize group if not already present
+        }
+        totals[credit.group] -= credit.amount; // Subtract credit amount
+      });
+    });
+
+    return totals;
+  };
+
+  const groupTotals = calculateGroupTotals(vouchers || []);
+  console.log("groupTotals", groupTotals);
   useEffect(() => {
     if (selectedDate) {
       const totalForSelectedDate = dailyTransactions.filter((transaction) => {
@@ -99,8 +129,6 @@ const PayMasterReportMonth = () => {
       setTotalCreditForDay(0);
     }
   }, [selectedDate, dailyTransactions]);
-
-  const handleMainClick = (id) => navigate(`/staff/paymasterreports/${id}`);
 
   // Function to generate PDF
 
@@ -254,6 +282,11 @@ const PayMasterReportMonth = () => {
     doc.save(`Transactions_${month}.pdf`);
   };
 
+  const handleMainClick = (id, employeeName) => {
+    navigate(`/staff/paymaster/${id}`, {
+      state: { EmployeeName: employeeName },
+    });
+  };
   if (isLoading) return <div className="text-center p-4">Loading...</div>;
   if (isError)
     return <div className="text-center p-4">Error fetching transactions</div>;
@@ -319,6 +352,7 @@ const PayMasterReportMonth = () => {
                       key={transaction._id}
                       className="border border-gray-400"
                     >
+                      {console.log("transaction", transaction)}
                       <td className="border border-gray-300 p-1 text-center dark:bg-gray-700 ">
                         {new Date(transaction.date).toLocaleDateString()}
                       </td>
@@ -326,7 +360,7 @@ const PayMasterReportMonth = () => {
                         {transaction.voucherNumber || "N/A"}
                       </td>
                       <td className="border border-gray-300 p-1 text-center dark:bg-gray-700 ">
-                        {transaction.description || "N/A"}
+                        {transaction.EmployeeName || "N/A"}
                       </td>
                       <td className="border border-gray-300 p-1 text-center dark:bg-gray-700 ">
                         {transaction.debitLedgers
@@ -359,7 +393,12 @@ const PayMasterReportMonth = () => {
                           <FontAwesomeIcon icon={faPrint} className="mr-2" />
                         </button>
                         <button
-                          onClick={() => handleMainClick(transaction._id)}
+                          onClick={() =>
+                            handleMainClick(
+                              transaction._id,
+                              transaction.EmployeeName
+                            )
+                          }
                           className="text-red-600"
                         >
                           <FontAwesomeIcon icon={faEye} className="ml-2" />

@@ -42,31 +42,6 @@ function InvoiceHeader() {
         >
           journal
         </NavLink>
-
-        <NavLink
-          to="/vouchers/contravoucher"
-          className="px-1 py-1 no-underline rounded hover:text-white hover:bg-black dark:hover:bg-gradient-to-r from-green-400 to-blue-500"
-        >
-          contra voucher
-        </NavLink>
-        <NavLink
-          to="/vouchers/creditnote"
-          className="px-1 py-1 no-underline rounded hover:text-white hover:bg-black dark:hover:bg-gradient-to-r from-green-400 to-blue-500"
-        >
-          creditnote
-        </NavLink>
-        <NavLink
-          to="/vouchers/debitnote"
-          className="px-1 py-1 no-underline rounded hover:text-white hover:bg-black dark:hover:bg-gradient-to-r from-green-400 to-blue-500"
-        >
-          debitnote
-        </NavLink>
-        <NavLink
-          to="/vouchers/indirectdebitnote"
-          className="px-1 py-1 no-underline rounded hover:text-white hover:bg-black dark:hover:bg-gradient-to-r from-green-400 to-blue-500"
-        >
-          Indirect Debit Note
-        </NavLink>
       </div>
     </div>
   );

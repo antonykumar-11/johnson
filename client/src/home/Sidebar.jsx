@@ -217,83 +217,7 @@ function Sidebar({ isSidebarOpen }) {
               </NavLink>
             </motion.div>
           </div>
-          {/* stock and Leder Menu */}
-          <div className="relative" ref={dropdownRef}>
-            <div
-              onClick={() => {
-                handleNavigation("/stock");
-                handleDropdownToggle("stock");
-              }}
-              className="flex items-center gap-2 cursor-pointer hover:bg-gray-200 p-2 rounded-md"
-            >
-              <ShoppingBag size={23} className="min-w-max" />
-              <span className={`${!isOpen && "hidden"}`}>Stock Manageent</span>
-              <ChevronDown
-                size={20}
-                className={`transition-transform ${
-                  activeDropdown === "stock" ? "rotate-180" : ""
-                }`}
-              />
-            </div>
 
-            {/* Dropdown with transition */}
-            <motion.div
-              variants={dropdownVariants}
-              animate={activeDropdown === "stock" ? "open" : "closed"}
-              className="overflow-hidden ml-6"
-            >
-              <NavLink
-                to="/stock/iddetails"
-                className="block py-1 px-2 hover:bg-gray-200 rounded-md transition-all"
-                onClick={() => handleNavigation("/stock/iddetails")}
-              >
-                Stock Category
-              </NavLink>
-              <NavLink
-                to="/stock/createstockgroupform"
-                className="block py-1 px-2 hover:bg-gray-200 rounded-md transition-all"
-                onClick={() => handleNavigation("/stock/createstockgroupform")}
-              >
-                Stock Group
-              </NavLink>
-              <NavLink
-                to="/stock/createstockitems"
-                className="block py-1 px-2 hover:bg-gray-200 rounded-md transition-all"
-                onClick={() => handleNavigation("/stock/createstockitems")}
-              >
-                Stock Create
-              </NavLink>
-              <NavLink
-                to="/stock/stockcategorylist"
-                className="block py-1 px-2 hover:bg-gray-200 rounded-md transition-all"
-                onClick={() => handleNavigation("/stock/stockcategorylist")}
-              >
-                show Stock category
-              </NavLink>
-              <NavLink
-                to="/stock/stockcategorylist"
-                className="block py-1 px-2 hover:bg-gray-200 rounded-md transition-all"
-                onClick={() => handleNavigation("/stock/stockcategorylist")}
-              >
-                Stock category List
-              </NavLink>
-
-              <NavLink
-                to="/stock/ledgerCreate"
-                className="block py-1 px-2 hover:bg-gray-200 rounded-md transition-all"
-                onClick={() => handleNavigation("/stock/ledgerCreate")}
-              >
-                Ledger Grate
-              </NavLink>
-              <NavLink
-                to="/stock/ledgerlist"
-                className="block py-1 px-2 hover:bg-gray-200 rounded-md transition-all"
-                onClick={() => handleNavigation("/stock/ledgerlist")}
-              >
-                show Ledger
-              </NavLink>
-            </motion.div>
-          </div>
           {/* Voucher Menu */}
           <div className="relative" ref={dropdownRef}>
             <div
@@ -304,7 +228,7 @@ function Sidebar({ isSidebarOpen }) {
               className="flex items-center gap-2 cursor-pointer hover:bg-gray-200 p-2 rounded-md"
             >
               <ShoppingBag size={23} className="min-w-max" />
-              <span className={`${!isOpen && "hidden"}`}>Vocher Manageent</span>
+              <span className={`${!isOpen && "hidden"}`}>Vocher</span>
               <ChevronDown
                 size={20}
                 className={`transition-transform ${
@@ -320,54 +244,46 @@ function Sidebar({ isSidebarOpen }) {
               className="overflow-hidden ml-6"
             >
               <NavLink
+                to="/vouchers"
+                className="block py-1 px-2 hover:bg-gray-200 rounded-md transition-all"
+                onClick={() => handleNavigation("/vouchers")}
+              >
+                Dash Board
+              </NavLink>
+              <NavLink
+                to="/vouchers/purchaseform"
+                className="block py-1 px-2 hover:bg-gray-200 rounded-md transition-all"
+                onClick={() => handleNavigation("/vouchers/purchaseform")}
+              >
+                Purchase
+              </NavLink>
+              <NavLink
                 to="/vouchers/paymentform"
                 className="block py-1 px-2 hover:bg-gray-200 rounded-md transition-all"
                 onClick={() => handleNavigation("/vouchers/paymentform")}
               >
-                Payment Voucher
+                Payment
               </NavLink>
               <NavLink
                 to="/vouchers/sales"
                 className="block py-1 px-2 hover:bg-gray-200 rounded-md transition-all"
                 onClick={() => handleNavigation("/vouchers/sales")}
               >
-                Sales Voucher
+                Sales
               </NavLink>
               <NavLink
                 to="/vouchers/receipt"
                 className="block py-1 px-2 hover:bg-gray-200 rounded-md transition-all"
                 onClick={() => handleNavigation("/vouchers/receipt")}
               >
-                Receipt Voucher
+                Receipt
               </NavLink>
               <NavLink
                 to="/vouchers/journal"
                 className="block py-1 px-2 hover:bg-gray-200 rounded-md transition-all"
                 onClick={() => handleNavigation("/vouchers/journal")}
               >
-                Journal Voucher
-              </NavLink>
-              <NavLink
-                to="/vouchers/contravoucher"
-                className="block py-1 px-2 hover:bg-gray-200 rounded-md transition-all"
-                onClick={() => handleNavigation("/vouchers/contravoucher")}
-              >
-                Contra Voucher
-              </NavLink>
-
-              <NavLink
-                to="/vouchers/creditnote"
-                className="block py-1 px-2 hover:bg-gray-200 rounded-md transition-all"
-                onClick={() => handleNavigation("/vouchers/creditnote")}
-              >
-                Credit Note
-              </NavLink>
-              <NavLink
-                to="/vouchers/debitnote"
-                className="block py-1 px-2 hover:bg-gray-200 rounded-md transition-all"
-                onClick={() => handleNavigation("/vouchers/debitnote")}
-              >
-                Debit Note
+                Journal
               </NavLink>
             </motion.div>
           </div>
@@ -421,121 +337,7 @@ function Sidebar({ isSidebarOpen }) {
               </NavLink>
             </motion.div>
           </div>
-          {/*invoice menu*/}
-          <div className="relative" ref={dropdownRef}>
-            <div
-              onClick={() => {
-                handleNavigation("/invoice");
-                handleDropdownToggle("invoice");
-              }}
-              className="flex items-center gap-2 cursor-pointer hover:bg-gray-200 p-2 rounded-md"
-            >
-              <ShoppingBag size={23} className="min-w-max" />
-              <span className={`${!isOpen && "hidden"}`}>
-                Reports Manageent
-              </span>
-              <ChevronDown
-                size={20}
-                className={`transition-transform ${
-                  activeDropdown === "invoice" ? "rotate-180" : ""
-                }`}
-              />
-            </div>
 
-            {/* Dropdown with transition */}
-            <motion.div
-              variants={dropdownVariants}
-              animate={activeDropdown === "invoice" ? "open" : "closed"}
-              className="overflow-hidden ml-6"
-            >
-              <NavLink
-                to="/invoice/incomemain"
-                className="block py-1 px-2 hover:bg-gray-200 rounded-md transition-all"
-                onClick={() => handleNavigation("/invoice/incomemain")}
-              >
-                Show Ledger
-              </NavLink>
-            </motion.div>
-          </div>
-          {/*report menu*/}
-          <div className="relative" ref={dropdownRef}>
-            <div
-              onClick={() => {
-                handleNavigation("/reports");
-                handleDropdownToggle("reports");
-              }}
-              className="flex items-center gap-2 cursor-pointer hover:bg-gray-200 p-2 rounded-md"
-            >
-              <ShoppingBag size={23} className="min-w-max" />
-              <span className={`${!isOpen && "hidden"}`}>
-                Reports Manageent
-              </span>
-              <ChevronDown
-                size={20}
-                className={`transition-transform ${
-                  activeDropdown === "reports" ? "rotate-180" : ""
-                }`}
-              />
-            </div>
-
-            {/* Dropdown with transition */}
-            <motion.div
-              variants={dropdownVariants}
-              animate={activeDropdown === "reports" ? "open" : "closed"}
-              className="overflow-hidden ml-6"
-            >
-              <NavLink
-                to="/reports/incomemain"
-                className="block py-1 px-2 hover:bg-gray-200 rounded-md transition-all"
-                onClick={() => handleNavigation("/reports/incomemain")}
-              >
-                Show Ledger
-              </NavLink>
-              <NavLink
-                to="/reports/purchasereport"
-                className="block py-1 px-2 hover:bg-gray-200 rounded-md transition-all"
-                onClick={() => handleNavigation("/reports/purchasereport")}
-              >
-                Purchase Reports
-              </NavLink>
-              <NavLink
-                to="/reports/droupreports"
-                className="block py-1 px-2 hover:bg-gray-200 rounded-md transition-all"
-                onClick={() => handleNavigation("/reports/droupreports")}
-              >
-                Show Groups
-              </NavLink>
-              <NavLink
-                to="/stock/stockcategorylist"
-                className="block py-1 px-2 hover:bg-gray-200 rounded-md transition-all"
-                onClick={() => handleNavigation("/stock/stockcategorylist")}
-              >
-                show Stock category
-              </NavLink>
-              <NavLink
-                to="/stock/stockcategorylist"
-                className="block py-1 px-2 hover:bg-gray-200 rounded-md transition-all"
-                onClick={() => handleNavigation("/stock/stockcategorylist")}
-              >
-                Stock category List
-              </NavLink>
-
-              <NavLink
-                to="/stock/ledgerCreate"
-                className="block py-1 px-2 hover:bg-gray-200 rounded-md transition-all"
-                onClick={() => handleNavigation("/stock/ledgerCreate")}
-              >
-                Ledger Grate
-              </NavLink>
-              <NavLink
-                to="/stock/ledgerlist"
-                className="block py-1 px-2 hover:bg-gray-200 rounded-md transition-all"
-                onClick={() => handleNavigation("/stock/ledgerlist")}
-              >
-                show Ledger
-              </NavLink>
-            </motion.div>
-          </div>
           {/* admin Menu */}
           <div className="relative" ref={dropdownRef}>
             <div
@@ -589,9 +391,133 @@ function Sidebar({ isSidebarOpen }) {
               >
                 Custemr Details
               </NavLink>
+              <NavLink
+                to="/admin/monthprofit"
+                className="block py-1 px-2 hover:bg-gray-200 rounded-md transition-all"
+                onClick={() => handleNavigation("/admin/monthprofit")}
+              >
+                Month Profit Create
+              </NavLink>
+              <NavLink
+                to="/admin/monthprofittable"
+                className="block py-1 px-2 hover:bg-gray-200 rounded-md transition-all"
+                onClick={() => handleNavigation("/admin/monthprofittable")}
+              >
+                Month Profit
+              </NavLink>
+              <NavLink
+                to="/admin/vehicleRentCreate"
+                className="block py-1 px-2 hover:bg-gray-200 rounded-md transition-all"
+                onClick={() => handleNavigation("/admin/vehicleRentCreate")}
+              >
+                Vehicle Rent Create
+              </NavLink>
+              <NavLink
+                to="/admin/mvehicleRentTable"
+                className="block py-1 px-2 hover:bg-gray-200 rounded-md transition-all"
+                onClick={() => handleNavigation("/admin/mvehicleRentTable")}
+              >
+                Vehicle Rent Table
+              </NavLink>
             </motion.div>
           </div>
-          {/* Stock Menu */}
+          {/* All Reports */}
+          <div className="relative" ref={dropdownRef}>
+            <div
+              onClick={() => {
+                handleNavigation("/reports");
+                handleDropdownToggle("reports");
+              }}
+              className="flex items-center gap-2 cursor-pointer hover:bg-gray-200 p-2 rounded-md"
+            >
+              <ShoppingBag size={23} className="min-w-max" />
+              <span className={`${!isOpen && "hidden"}`}>All Reports</span>
+              <ChevronDown
+                size={20}
+                className={`transition-transform ${
+                  activeDropdown === "reports" ? "rotate-180" : ""
+                }`}
+              />
+            </div>
+
+            {/* Dropdown with transition */}
+            <motion.div
+              variants={dropdownVariants}
+              animate={activeDropdown === "reports" ? "open" : "closed"}
+              className="overflow-hidden ml-6"
+            >
+              <NavLink
+                to="/reports"
+                className="block py-1 px-2 hover:bg-gray-200 rounded-md transition-all"
+                onClick={() => handleNavigation("/reports")}
+              >
+                Dash Board
+              </NavLink>
+              <NavLink
+                to="/reports/purchasereport"
+                className="block py-1 px-2 hover:bg-gray-200 rounded-md transition-all"
+                onClick={() => handleNavigation("/reports/purchasereport")}
+              >
+                Purchase
+              </NavLink>
+              <NavLink
+                to="/reports/paymentreport"
+                className="block py-1 px-2 hover:bg-gray-200 rounded-md transition-all"
+                onClick={() => handleNavigation("/reports/paymentreport")}
+              >
+                Payment
+              </NavLink>
+              <NavLink
+                to="/reports/salesereports"
+                className="block py-1 px-2 hover:bg-gray-200 rounded-md transition-all"
+                onClick={() => handleNavigation("/reports/salesereports")}
+              >
+                Sales
+              </NavLink>
+              <NavLink
+                to="/reports/receiptreports"
+                className="block py-1 px-2 hover:bg-gray-200 rounded-md transition-all"
+                onClick={() => handleNavigation("/reports/receiptreports")}
+              >
+                Receipt
+              </NavLink>
+              <NavLink
+                to="/reports/journalreports"
+                className="block py-1 px-2 hover:bg-gray-200 rounded-md transition-all"
+                onClick={() => handleNavigation("/reports/journalreports")}
+              >
+                Journal
+              </NavLink>
+              <NavLink
+                to="/reports/invoice-preview"
+                className="block py-1 px-2 hover:bg-gray-200 rounded-md transition-all"
+                onClick={() => handleNavigation("/reports/invoice-preview")}
+              >
+                Invoice
+              </NavLink>
+              <NavLink
+                to="/reports/ledgerlist"
+                className="block py-1 px-2 hover:bg-gray-200 rounded-md transition-all"
+                onClick={() => handleNavigation("/reports/ledgerlist")}
+              >
+                All Ledger
+              </NavLink>
+              <NavLink
+                to="/reports/incomemain"
+                className="block py-1 px-2 hover:bg-gray-200 rounded-md transition-all"
+                onClick={() => handleNavigation("/reports/incomemain")}
+              >
+                Single Ledger
+              </NavLink>
+              <NavLink
+                to="/reports/droupreports"
+                className="block py-1 px-2 hover:bg-gray-200 rounded-md transition-all"
+                onClick={() => handleNavigation("/reports/droupreports")}
+              >
+                Groups
+              </NavLink>
+            </motion.div>
+          </div>
         </nav>
       </div>
       {/* logout */}

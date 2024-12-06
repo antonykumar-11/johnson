@@ -184,10 +184,8 @@ const AttendanceList = () => {
     };
 
     const entity = allEntities.find((ent) => ent._id === entityId);
-
-    const entityName = entity
-      ? entity.userName || entity.vehicleDetails.ownerName
-      : "Unknown";
+    console.log("entity", entity);
+    const entityName = entity ? entity.userName || entity.name : "Unknown";
     const formattedDate = format(parseISO(date), "MMMM d, yyyy");
 
     try {
@@ -233,12 +231,14 @@ const AttendanceList = () => {
     .map((_, i) => i + 1);
 
   const renderTable = (entity) => {
+    console.log("entity", entity);
     const entityId = entity?._id;
     if (!entityId) return null;
 
     const entityName =
-      `${entity.userName || ""} ( ${entity.name || ""})`.trim() ||
-      "Unknown Employee";
+      `${entity.userName || entity.name} ( ${
+        entity.underEmployee || ""
+      })`.trim() || "Unknown Employee";
 
     const attendanceDays = selectedDays[entityId]?.[selectedMonthYear] || [];
     const dutyHoursArray = dutyHours[entityId]?.[selectedMonthYear] || [];
@@ -253,7 +253,7 @@ const AttendanceList = () => {
       (acc, curr) => acc + curr,
       0
     );
-    console.log("totalDaysWorkedCount", totalDaysWorkedCount);
+    console.log("entityName", entityName);
     return (
       <div key={entityId} className="p-4 dark:bg-gray-700">
         <h3 className="text-lg font-semibold mb-2 dark:text-white">

@@ -11,6 +11,7 @@ const Header = ({ toggleSidebar }) => {
   const { themeMode, darkTheme, lightTheme } = useTheme();
   const navigate = useNavigate();
   const { isAuthenticated, user, updateUserAvatar } = useAuth(); // Assuming you have a function to update user info
+  console.log("user", user);
   const [isModalOpen, setModalOpen] = useState(false);
 
   // Handle theme toggle
@@ -51,7 +52,7 @@ const Header = ({ toggleSidebar }) => {
         {isAuthenticated ? (
           <div className="flex items-center space-x-2 cursor-pointer">
             <img
-              src={user?.avatar || "/default-avatar.png"}
+              src={user.avatar || "/default-avatar.png"}
               alt="User profile"
               className="w-10 h-10 rounded-full object-cover border-2 border-white"
               onClick={handleProfileClick}

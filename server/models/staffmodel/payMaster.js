@@ -9,6 +9,7 @@ const LedgerEntrySchema = new mongoose.Schema({
   },
   ledgerName: { type: String, required: true },
   amount: { type: Number, required: true }, // Ensure this is a Number
+  group: { type: String, required: true },
 });
 
 const PayMasterSchema = new mongoose.Schema({
@@ -19,6 +20,7 @@ const PayMasterSchema = new mongoose.Schema({
   debitLedgers: { type: [LedgerEntrySchema], required: true },
   creditLedgers: { type: [LedgerEntrySchema], required: true },
   description: { type: String, required: true },
+  EmployeeName: { type: String, required: false },
 });
 
 const PayMaster = mongoose.model("PayMaster", PayMasterSchema);
